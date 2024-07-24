@@ -1,0 +1,33 @@
+@media (max-width: 992px) {
+
+    /* navbar */
+    .navbar-nav {
+        margin: auto;
+    }
+
+    .navbar-nav form input {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .navbar-nav .btn {
+        width: 100%;  
+        margin: 10px 0px 10px 0px; 
+    }
+    /* navbar */
+
+    /* detail */
+    #detail h4 {
+        margin-top: 20px;
+    }
+    #detail .form-control {
+        margin-bottom: 10px;
+    }
+    /* detail */
+
+    /* cart */
+    #cart .ringkasan {
+        margin-top: 20px;
+    } 
+    /* cart */
+}

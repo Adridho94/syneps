@@ -1,0 +1,37 @@
+<?php
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BannerController;
+use App\Http\Controllers\ProductController;
+/*
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register API routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "api" middleware group. Make something great!
+|
+*/
+
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+// Route::get('/banner', 'BannerController@index');
+
+Route::get('/banners',[BannerController::class,'index']);
+Route::post('/banner',[BannerController::class,'store']);
+Route::post('/banner/{id}',[BannerController::class,'update']);
+Route::delete('/banner/{id}',[BannerController::class,'destroy']);
+
+
+// method pengambilan data keseluruhan dari database
+Route::get('/products',[ProductController::class,'index' ]);
+Route::post('/product',[ProductController::class,'store']);
+Route::post('/product/{id}',[ProductController::class,'update']);
+Route::delete('/product/{id}',[ProductController::class,'destroy']);
+Route::get('/product/{id}',[ProductController::class,'show']);
+
+// Route::resource('products', ProductController::class);

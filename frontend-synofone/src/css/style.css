@@ -1,0 +1,174 @@
+/* body {
+    margin-bottom: 500px;
+} */
+
+/* navbar */
+.navbar-brand img {
+    width: 120px;
+}
+
+.navbar-nav {
+    margin-left: auto;
+}
+
+.navbar-nav form input {
+    width: 400px;
+    margin-right: 20px;
+}
+
+.navbar-nav .btn {
+    width: 120px;
+}
+
+.navbar-nav .profil {
+    background: none;
+    border: none;
+}
+/* navbar */
+
+/* banner */
+#banner .brand img {
+    width: 100%;
+}
+#banner .carousel img {
+    width: 100%;
+}
+
+/* banner */
+
+/* unggulan */
+.unggulan .card {
+    width: 100%;
+}
+
+.unggulan .card-text {
+    text-decoration: none;
+    color: black;
+}
+
+.unggulan .card-text:hover {
+    text-decoration: underline yellow;
+}
+
+/* unggulan */
+
+/* lainnya */
+#lainnya .card {
+    width: 100%;
+}
+
+#lainnya .card-text {
+    text-decoration: none;
+    color: black;
+}
+
+#lainnya .card-text:hover {
+    text-decoration: underline yellow;
+}
+
+/* unggulan */
+
+/* detail */
+#detail .card img {
+    width: 100%;
+    padding: 50px;
+}
+
+#detail .colors .btn {
+    width: 120px;
+    height: 40px;
+    border: 2px solid #0D6EFD;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    
+}
+
+#detail .colors .btn:focus {
+    outline: none;
+    color: white;
+    background-color: #0D6EFD; /* Warna garis tepi saat dipilih */
+}
+/* detail */
+
+/* login */
+#login {
+    margin-top: 50px;
+}
+#login label {
+    font-weight: 600;
+    margin: 10px 0px 10px 0px;
+}
+
+#login .btn {
+    width: 190px;
+}
+/* login */
+
+/* daftar */
+#daftar {
+    margin-top: 50px;
+}
+#daftar label {
+    font-weight: 600;
+    margin: 10px 0px 10px 0px;
+}
+
+#daftar .btn {
+    width: 190px;
+}
+/* daftar */
+
+/* cart */
+#cart .card img {
+    padding: 20px;
+}
+
+#cart .ringkasan .card {
+    padding: 20px;
+}
+
+#cart .card-title {
+    text-decoration: none;
+    font-weight: 600;
+}
+
+#cart .card label {
+    margin: 10px 0px 10px 0px;
+}
+/* cart */
+
+/* order */
+#order .produk .card img {
+    width: 100%;
+    padding: 20px;
+}
+
+#order .produk label {
+    margin: 10px 0px 10px 0px;
+}
+
+#order .info-buyer label {
+    font-weight: 600;
+    margin: 10px 0px 10px 0px;
+}
+
+#order .info-buyer #row-bank {
+    margin-top: 10px;
+}
+#order .info-buyer #row-bank p {
+    margin: 0px 0px 0px 0px;
+}
+
+#order .info-buyer #row-gopay {
+    margin-top: 10px;
+}
+#order .info-buyer #row-gopay p {
+    margin: 0px 0px 0px 0px;
+}
+/* order */
+
+/* footer */
+footer {
+    margin-bottom: 30px;
+}
+/* footer */
