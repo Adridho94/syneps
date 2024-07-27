@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CartController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -41,3 +42,6 @@ Route::post('/user',[UserController::class,'store']);
 Route::get('/user/{id}',[UserController::class,'show']);
 Route::post('/user/{id}',[UserController::class,'update']);
 Route::delete('/user/{id}',[UserController::class,'destroy']);
+
+
+Route::post('/cart',[CartController::class,'store']);
