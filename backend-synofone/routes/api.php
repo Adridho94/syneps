@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -34,4 +35,9 @@ Route::post('/product/{id}',[ProductController::class,'update']);
 Route::delete('/product/{id}',[ProductController::class,'destroy']);
 Route::get('/product/{id}',[ProductController::class,'show']);
 
-// Route::resource('products', ProductController::class);
+
+Route::get('/users',[UserController::class,'index']);
+Route::post('/user',[UserController::class,'store']);
+Route::get('/user/{id}',[UserController::class,'show']);
+Route::post('/user/{id}',[UserController::class,'update']);
+Route::delete('/user/{id}',[UserController::class,'destroy']);
