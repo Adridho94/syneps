@@ -45,3 +45,4 @@ Route::delete('/user/{id}',[UserController::class,'destroy']);
 
 
 Route::post('/cart',[CartController::class,'store']);
+Route::get('/carts',[CartController::class,'index']);

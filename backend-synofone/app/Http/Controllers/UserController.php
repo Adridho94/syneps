@@ -35,7 +35,7 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => bcrypt($request->password)
         ]);
-
+        
         return response()->json([
             'status' => 'Data User Berhasil Ditambahkan',
             'data' => $user
