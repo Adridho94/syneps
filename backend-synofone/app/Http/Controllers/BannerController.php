@@ -47,23 +47,17 @@ class BannerController extends Controller
     }
 
     public function update(Request $request, string $id){
-
-
-        // return "test";
         // memvalidasi data yang dikirim
         $request -> validate([
             'image' => 'required',
             'keterangan' => 'required'
         ]);
-
         // mencari data banner berdasarkan id dan di tampung ke dalam variabel $banner
         $banner = Banner::find($id);
-
         // proses memasukan data baru ke dalam variabel $banner
         $banner->image = $request->image;
         $banner->keterangan = $request->keterangan;
         $banner->save();
-
         // memberikan response berhasil dan mengembalikan ke client 
         return response()->json([
             'message' => 'Banner berhasil diupdate',
