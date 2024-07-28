@@ -23,13 +23,13 @@ class BannerController extends Controller
     {
 
         $request->validate([
-            'image' => 'required',
+            'image' => 'required||image|mimes:jpeg,png,jpg,gif,svg',
             'keterangan' => 'required'
         ]);
 
         if ($request->hasFile('image')) {
             $file = $request->file('image');
-            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $filename = "Gambar".time() . '.' . $file->getClientOriginalExtension();
             // $filePath = 'lo'
             $file->move('uploads/banner/', $filename);
             // $request->image = $filename;
