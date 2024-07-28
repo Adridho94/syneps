@@ -6,6 +6,7 @@ use App\Http\Controllers\BannerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CartitemController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -46,3 +47,6 @@ Route::delete('/user/{id}',[UserController::class,'destroy']);
 
 Route::post('/cart',[CartController::class,'store']);
 Route::get('/carts',[CartController::class,'index']);
+
+Route::get('/cartitem',[CartitemController::class,'index']);
+Route::post('/cartitem',[CartitemController::class,'store']);
