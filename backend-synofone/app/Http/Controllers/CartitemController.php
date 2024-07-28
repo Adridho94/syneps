@@ -19,17 +19,34 @@ class CartitemController extends Controller
 
     public function store(Request $request)
     {
-        $cartitem = Cartitem::create([
-            'cart_id' => $request->cart_id,
-            'product_id' => $request->product_id,
-            'qty' => $request->qty
+
+        $request->validate([
+            'cart_id' => 'required',
+            'product_id' => 'required',
+            'qty' => 'required'
         ]);
 
+        $findCart = Cartitem::where('cart_id', $request->cart_id)->where('product_id', $request->product_id)->first();
+        if ($findCart) {
+            $findCart->qty = $findCart->qty + $request->qty;
+            $findCart->save();
+            return response()->json([
+                'message' => 'Berhasil menambahkan data cartitem',
+                'data' => $findCart
+            ], 200);
+        } else {
+            $cartitem = Cartitem::create([
+                'cart_id' => $request->cart_id,
+                'product_id' => $request->product_id,
+                'qty' => $request->qty
+            ]);
+        }
         return response()->json([
             'message' => 'Berhasil menambahkan data cartitem',
             'data' => $cartitem
         ], 200);
     }
+
 
     public function userCart($id)
     {
@@ -46,7 +63,7 @@ class CartitemController extends Controller
                 'message' => 'Berhasil menampilkan data cartitem',
                 'data' => $cartItem
             ], 200);
-        } 
+        }
         // jika data tidak ditemukan maka kembalikan response
         else {
             return response()->json([
