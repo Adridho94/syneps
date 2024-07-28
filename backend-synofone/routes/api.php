@@ -50,3 +50,6 @@ Route::get('/carts',[CartController::class,'index']);
 
 Route::get('/cartitem',[CartitemController::class,'index']);
 Route::post('/cartitem',[CartitemController::class,'store']);
+
+// mencari data item di keranjang sesuai dengan id user
+Route::get('/user-cart/{id}',[CartitemController::class,'userCart']);
