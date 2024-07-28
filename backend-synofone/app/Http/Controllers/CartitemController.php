@@ -33,15 +33,22 @@ class CartitemController extends Controller
 
     public function userCart($id)
     {
+
+        // mencari data cart berdasarkan id user
         $cart = Cart::where('user_id', $id)->first();
         $cart_id = $cart->id;
+        // mencari data cartitem berdasarkan id cart
         $cartItem = Cartitem::where('cart_id', $cart_id)->get();
+
+        // data di hitung,jika data lebih dari 0 maka kembalikan response
         if ($cartItem->count() > 0) {
             return response()->json([
                 'message' => 'Berhasil menampilkan data cartitem',
                 'data' => $cartItem
             ], 200);
-        } else {
+        } 
+        // jika data tidak ditemukan maka kembalikan response
+        else {
             return response()->json([
                 'message' => 'Data cartitem tidak ditemukan',
                 'data' => null
