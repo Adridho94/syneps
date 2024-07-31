@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CartitemController;
+use App\Http\Controllers\OrderController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -53,3 +54,6 @@ Route::post('/cartitem',[CartitemController::class,'store']);
 
 // mencari data item di keranjang sesuai dengan id user
 Route::get('/user-cart/{id}',[CartitemController::class,'userCart']);
+
+Route::get('/orders',[OrderController::class,'index']);
+Route::post('/order',[OrderController::class,'store']);
