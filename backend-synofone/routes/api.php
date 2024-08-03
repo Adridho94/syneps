@@ -57,3 +57,5 @@ Route::get('/user-cart/{id}',[CartitemController::class,'userCart']);
 
 Route::get('/orders',[OrderController::class,'index']);
 Route::post('/order',[OrderController::class,'store']);
+Route::get('/order/{id}',[OrderController::class,'show']);
+Route::delete('/order/{id}',[OrderController::class,'destroy']);
