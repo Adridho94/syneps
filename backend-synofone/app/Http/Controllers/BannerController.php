@@ -70,13 +70,27 @@ class BannerController extends Controller
     {
         // mencari data banner berdasarkan id dan di tampung ke dalam variabel $banner
         $banner = Banner::find($id);
-
+        $file = $banner->Realimage;
+        // return $file;
+        // menghapus file yang ada di dalam folder uploads/banner
+        unLink('uploads/banner/' . $file);
         // proses menghapus data banner
         $banner->delete();
-
         // memberikan response berhasil dan mengembalikan ke client 
         return response()->json([
             'message' => 'Banner berhasil dihapus',
+        ], 200);
+    }
+
+    public function show(string $id)
+    {
+        // mencari data banner berdasarkan id dan di tampung ke dalam variabel $banner
+        $id = Crypt::decryptString($id);
+        $banner = Banner::find($id);
+        // memberikan response berhasil dan mengembalikan ke client 
+        return response()->json([
+            'message' => 'Berhasil menampilkan data banner',
+            'data' => $banner
         ], 200);
     }
 }
