@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Banner;
+use Illuminate\Support\Facades\Crypt;
+// user storage;
+use Illuminate\Support\Facades\Storage;
 
 class BannerController extends Controller
 {
@@ -12,7 +15,6 @@ class BannerController extends Controller
         // return "testing";a
         $banner = Banner::all();
         // return $banner;
-
         return response()->json([
             'message' => 'Berhasil menampilkan data banner',
             'data' => $banner
@@ -26,15 +28,11 @@ class BannerController extends Controller
             'image' => 'required||image|mimes:jpeg,png,jpg,gif,svg',
             'keterangan' => 'required'
         ]);
+        $file = $request->file('image');
+        $filename = "Gambar" . time() . '.' . $file->getClientOriginalExtension();
+        // menyimpan file kedalam folder directory
+        $file->move('uploads/banner/', $filename);
 
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $filename = "Gambar".time() . '.' . $file->getClientOriginalExtension();
-            // $filePath = 'lo'
-            $file->move('uploads/banner/', $filename);
-            // $request->image = $filename;
-        }
-        
         $banner = new Banner;
         $banner->image = $filename;
         $banner->keterangan = $request->keterangan;
@@ -46,13 +44,16 @@ class BannerController extends Controller
         ], 200);
     }
 
-    public function update(Request $request, string $id){
+    public function update(Request $request, string $id)
+    {
         // memvalidasi data yang dikirim
-        $request -> validate([
+        $request->validate([
             'image' => 'required',
             'keterangan' => 'required'
         ]);
         // mencari data banner berdasarkan id dan di tampung ke dalam variabel $banner
+        $id = Crypt::decryptString($id);
+        // return $id;
         $banner = Banner::find($id);
         // proses memasukan data baru ke dalam variabel $banner
         $banner->image = $request->image;

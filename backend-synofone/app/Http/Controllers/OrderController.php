@@ -8,6 +8,14 @@ use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
 {
+
+    protected $rules = [
+        'cart_id' => 'required',
+        'alamat' => 'required',
+        'metode_pengiriman' => 'required',
+        'metode_pembayaran' => 'required',
+    ];
+
     public function index()
     {
         $orders = Order::all();
