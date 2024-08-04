@@ -18,6 +18,10 @@ class Banner extends Model
     {
         return url('uploads/banner/' . $value);
     }
+    public function getRealimageAttribute()
+    {
+        return $this->attributes['image'];
+    }
     public function getIdAttribute()
     {
         // jangan lupa  use Illuminate\Support\Facades\Crypt;

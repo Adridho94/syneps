@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 // use Illuminate\Support\Facades\DB;
 use App\Models\User;
+
 class UserSeeder extends Seeder
 {
     /**
@@ -20,7 +21,7 @@ class UserSeeder extends Seeder
         //     'email'=>'admin@admin.com',
         //     'password'=>bcrypt('admin123')
         // ]);
-    
+
         // method php native
         $user = new User;
         $user->name = 'admin syneps';
