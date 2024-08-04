@@ -4,16 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Crypt;
 
 class Banner extends Model
 {
     use HasFactory;
 
-    // ini adalah filed yang boleh di isi
-    // protected $fillable = [
-    //     'image',
-    //     'keterangan'
-    // ];
 
     // ini adalah filed yang tidak boleh di isi
     protected $guarded = ['id'];
@@ -21,5 +17,10 @@ class Banner extends Model
     public function getImageAttribute($value)
     {
         return url('uploads/banner/' . $value);
+    }
+    public function getIdAttribute()
+    {
+        // jangan lupa  use Illuminate\Support\Facades\Crypt;
+        return Crypt::encryptString($this->attributes['id']);
     }
 }
