@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BannerController;
@@ -19,13 +20,15 @@ use App\Http\Controllers\OrderController;
 |
 */
 
+Route::post('/login', [AuthController::class, 'login']);
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
 // Route::get('/banner', 'BannerController@index');
 
-Route::get('/banners',[BannerController::class,'index']);
+Route::get('/banners',[BannerController::class,'index'])->middleware('auth');
 Route::post('/banner',[BannerController::class,'store']);
 Route::post('/banner/{id}',[BannerController::class,'update']);
 Route::get('/banner/{id}',[BannerController::class,'show']);
