@@ -1,9 +1,11 @@
-import BrandComponent from "../components/BrandComponent";
-import CarouselComponent from "../components/CarouselComponent";
-import FooterComponent from "../components/FooterComponent";
-import NavbarComponent from "../components/NavbarComponent";
-import SmartphoneComponent from "../components/SmartphoneComponent";
-import UnggulanComponent from "../components/UnggulanComponent";
+import BrandComponent from "../../components/customer/BrandComponent";
+import CarouselComponent from "../../components/customer/CarouselComponent";
+import FooterComponent from "../../components/customer/FooterComponent";
+import NavbarComponent from "../../components/customer/NavbarComponent";
+import SmartphoneComponent from "../../components/customer/SmartphoneComponent";
+import UnggulanComponent from "../../components/customer/UnggulanComponent";
+
+
 
 const LandingPage = () => {
     return (

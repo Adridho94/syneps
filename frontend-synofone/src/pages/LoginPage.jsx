@@ -1,7 +1,7 @@
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 
 import { Link } from "react-router-dom";
-import FooterComponent from "../components/FooterComponent";
+import FooterComponent from "../components/customer/FooterComponent";
 
 const LoginPage = () => {
     return (

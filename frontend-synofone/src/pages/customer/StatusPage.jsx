@@ -1,6 +1,6 @@
 import { Button, Container, Row, Col, Form } from "react-bootstrap";
-import FooterComponent from "../components/FooterComponent";
-import NavComponent from "../components/NavComponent";
+import FooterComponent from "../../components/customer/FooterComponent";
+import NavComponent from "../../components/customer/NavComponent";
 
 const StatusPage = () => {
     return (
