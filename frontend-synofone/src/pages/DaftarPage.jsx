@@ -1,6 +1,6 @@
 import { Button, Row, Container, Col, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import FooterComponent from "../components/FooterComponent";
+import FooterComponent from "../components/customer/FooterComponent";
 
 const DaftarPage = () => {
     return (

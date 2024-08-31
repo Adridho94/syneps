@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Card, Form, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import NavComponent from '../components/NavComponent';
-import FooterComponent from '../components/FooterComponent';
+import NavComponent from '../../components/customer/NavComponent';
+import FooterComponent from '../../components/customer/FooterComponent';
 
 const OrderPage = () => {
     const [jumlah, setJumlah] = useState(1);

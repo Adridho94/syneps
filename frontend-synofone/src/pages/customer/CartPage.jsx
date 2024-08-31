@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Card, Form, Button, Modal } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import NavComponent from '../components/NavComponent';
+import NavComponent from '../../components/customer/NavComponent';
 
 const CartPage = () => {
     const [showModal, setShowModal] = useState(false);

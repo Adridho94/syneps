@@ -1,6 +1,6 @@
-import FooterComponent from "../components/FooterComponent";
-import NavbarComponent from "../components/NavbarComponent";
-import UnggulanComponent from "../components/UnggulanComponent";
+import FooterComponent from "../../components/customer/FooterComponent";
+import NavbarComponent from "../../components/customer/NavbarComponent";
+import UnggulanComponent from "../../components/customer/UnggulanComponent";
 
 import { Container, Row, Col, Card, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
