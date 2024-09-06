@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie'
 import { Navigate } from 'react-router-dom';
 
-const PrivateRoutes = ({Children}) => {
+const PrivateRoutes = ({children}) => {
     const token = Cookies.get('token');
 
     if (!token)
@@ -9,7 +9,7 @@ const PrivateRoutes = ({Children}) => {
         return <Navigate to='/' replace />
     }
 
-    return Children;
+    return children;
 }
 
 export default PrivateRoutes;

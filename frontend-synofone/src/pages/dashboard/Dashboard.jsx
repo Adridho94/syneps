@@ -1,6 +1,6 @@
 import DefaultLayout from "../../components/dashboard/DefaultLayout"
 
-const Dashboard = ({nama, umur, kelamin}) => {
+const Dashboard = () => {
     return (
         <DefaultLayout>
             <h1>Dashboard</h1>

@@ -38,11 +38,17 @@ const RouteIndex = () => {
             
             <Route path='/login' Component={LoginPage} />
             <Route path='/daftar' Component={DaftarPage} />
+            {/* <Route path='admin/dashboard' Component={Dashboard} /> */}
 
             {/* =================route dashboard================ */}
-            <Route path="admin/dashboard" element={<PrivateRoutes>
-                <Dashboard />
-            </PrivateRoutes>} />
+            <Route
+                path="/admin/dashboard"
+                element={
+                    <PrivateRoutes>
+                        <Dashboard />
+                    </PrivateRoutes>
+                }
+            />
 
             <Route path="admin/banners" element={<PrivateRoutes>
                 <Banners />
