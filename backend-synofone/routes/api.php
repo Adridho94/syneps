@@ -28,7 +28,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // Route::get('/banner', 'BannerController@index');
 
-Route::get('/banners',[BannerController::class,'index'])->middleware('auth');
+Route::get('/banners',[BannerController::class,'index']);
 Route::post('/banner',[BannerController::class,'store']);
 Route::post('/banner/{id}',[BannerController::class,'update']);
 Route::get('/banner/{id}',[BannerController::class,'show']);

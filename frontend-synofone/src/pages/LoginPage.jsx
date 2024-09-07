@@ -2,7 +2,7 @@ import { Container, Row, Col, Form, Button } from "react-bootstrap";
 
 import { Link } from "react-router-dom";
 import FooterComponent from "../components/customer/FooterComponent";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Api from "../routes/Api";
@@ -30,55 +30,58 @@ const LoginPage = () => {
         })
     }
 
+    useEffect(()=> {
     if (Cookies.get('token')) {
         return navigate('/admin/dashboard');
     }
+}, [0]);
 
-    return (
-        <>
-            <div id="login">
-                <Container>
-                    <Row className="d-flex align-items-center">
-                        <Col lg={6}>
-                            <h1>Masuk</h1>
-                            <p>Masuk untuk melanjutkan pembelian</p>
+// useEffect(()=>{},[]);
+return (
+    <>
+        <div id="login">
+            <Container>
+                <Row className="d-flex align-items-center">
+                    <Col lg={6}>
+                        <h1>Masuk</h1>
+                        <p>Masuk untuk melanjutkan pembelian</p>
 
-                            <Form onSubmit={handleLogin}>
-                                <Form.Label>Email</Form.Label>
-                                <Form.Control type="email" name="email" placeholder="Masukkan Email" value={email}
-                                    onChange={(e) => setEmail(e.target.value)} />
-                                {validation.email && (
-                                    <div className="alert alert-danger mt-2" role="alert">
-                                        {validation.email[0]}
-                                    </div>
-                                )}
+                        <Form onSubmit={handleLogin}>
+                            <Form.Label>Email</Form.Label>
+                            <Form.Control type="email" name="email" placeholder="Masukkan Email" value={email}
+                                onChange={(e) => setEmail(e.target.value)} />
+                            {validation.email && (
+                                <div className="alert alert-danger mt-2" role="alert">
+                                    {validation.email[0]}
+                                </div>
+                            )}
 
-                                <Form.Label>Password</Form.Label>
-                                <Form.Control type="password" name="password" placeholder="Masukkan Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                                {validation.password && (
-                                    <div className="alert alert-danger mt-2" role="alert">
-                                        {validation.password[0]}
-                                    </div>
-                                )}
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control type="password" name="password" placeholder="Masukkan Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                            {validation.password && (
+                                <div className="alert alert-danger mt-2" role="alert">
+                                    {validation.password[0]}
+                                </div>
+                            )}
 
-                                <Link to="/login" className="d-flex justify-content-end mt-3">Lupa Password?</Link>
+                            <Link to="/login" className="d-flex justify-content-end mt-3">Lupa Password?</Link>
 
-                                <Button type="submit" variant="primary" className="mt-5" >Masuk</Button>
-                            </Form>
+                            <Button type="submit" variant="primary" className="mt-5" >Masuk</Button>
+                        </Form>
 
-                            <p className="mt-5">Belum punya akun? <Link to="/daftar">Daftar</Link></p>
-                        </Col>
+                        <p className="mt-5">Belum punya akun? <Link to="/daftar">Daftar</Link></p>
+                    </Col>
 
-                        <Col lg={6}>
-                            <img src="/src/assets/image 4.png" width="100%" alt="" />
-                        </Col>
-                    </Row>
-                </Container>
-            </div>
+                    <Col lg={6}>
+                        <img src="/src/assets/image 4.png" width="100%" alt="" />
+                    </Col>
+                </Row>
+            </Container>
+        </div>
 
-            <FooterComponent />
-        </>
-    );
+        <FooterComponent />
+    </>
+);
 }
 
 export default LoginPage;

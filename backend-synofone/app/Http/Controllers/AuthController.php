@@ -11,6 +11,7 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
+        // return $request;
         $validator = Validator::make(
             $request->all(),
             [
@@ -29,8 +30,8 @@ class AuthController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-
         $user = User::where('email', $request->email)->first();
+        // return $user;
 
         if(!$user || !Hash::check($request->password, $user->password))
         {

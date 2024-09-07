@@ -1,8 +1,27 @@
 import { Link } from "react-router-dom"
 import { Button, Table } from "react-bootstrap"
 import DefaultLayout from "../../../components/dashboard/DefaultLayout"
+// ini untuk memanggil configurasi axios
+import Api from '../../../routes/Api.jsx'
+import { useState, useEffect } from 'react'
+
 
 const Banners = () => {
+
+    const [banners, setBanners] = useState([]);
+
+    useEffect(() => {
+        const getBanner = async () => {
+            try {
+                const response  = await Api.get('/banners');
+                console.log(response.data.data)
+                setBanners(response.data.data)
+            } catch (error){
+                console.error(error)
+            }
+        };
+        getBanner();
+    }, [0])
     return (
         <DefaultLayout>
             <div className="d-flex justify-content-between alig-items-center mb-3 mt-2">
@@ -15,24 +34,29 @@ const Banners = () => {
                 <Table className="table">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>No</th>
                             <th>Image</th>
                             <th>Keterangan</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Loading...</td>
-                            <td>Loading...</td>
-                            <td>Loading...</td>
+                        {banners.map((item,index)=>(
+                        <tr key={item.id || index}>
                             <td>
-                                <Link to="/admin/banners/:id">
+                                {index+1}</td>
+                            <td>
+                                <img src={item.image} alt="" width="50" />
+                                </td>
+                            <td>{item.keterangan}</td>
+                            <td>
+                                <Link to={"/admin/banners/"+item.id}>
                                     <Button className="btn-warning text-white me-2" size="sm">Edit</Button>
                                 </Link>
                                 <Button className="btn-danger" size="sm">Delete</Button>
                             </td>
                         </tr>
+                        ))}
                     </tbody>
                 </Table>
             </div>

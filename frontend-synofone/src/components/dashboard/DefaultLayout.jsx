@@ -3,9 +3,17 @@ import { Link } from "react-router-dom";
 
 // Import dari react-bootstrap untuk elemen UI yang siap pakai
 import { Container, Nav, Navbar, Button } from "react-bootstrap";
-
+import Cookies from 'js-cookie';
+import {useNavigate} from 'react-router-dom';
 // Komponen DefaultLayout yang akan digunakan sebagai layout utama
 const DefaultLayout = ({children}) => {
+
+    const navigate = useNavigate();
+
+    const handleLogout =()=>{
+        Cookies.remove("token")
+        navigate('/');
+    }
     return (
         <>
             {/* Membungkus layout dengan div yang memiliki id "defaultLayout" dan mengatur styling */}
@@ -35,7 +43,7 @@ const DefaultLayout = ({children}) => {
                         <Container fluid>
                             {/* Tombol logout yang diletakkan di kanan */}
                             <Navbar.Collapse className="justify-content-end">
-                                <Button className="btn-logout text-primary" size="sm">Logout</Button>
+                                <Button className="btn-logout text-primary" size="sm" onClick={handleLogout}>Logout</Button>
                             </Navbar.Collapse>
                         </Container>
                     </Navbar>
