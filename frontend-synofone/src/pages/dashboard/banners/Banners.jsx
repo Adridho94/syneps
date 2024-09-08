@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react'
 
 const Banners = () => {
 
+
     const [banners, setBanners] = useState([]);
 
     useEffect(() => {

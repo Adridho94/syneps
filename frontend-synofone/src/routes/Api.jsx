@@ -7,7 +7,7 @@ const Api = axios.create({
     // baseURL: 'http://localhost/syneps/backend-synofone/public/api',
     headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/json'
     }
 });
 
