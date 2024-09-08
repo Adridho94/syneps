@@ -4,6 +4,7 @@ import Api from "../../../routes/Api.jsx";
 import { useState } from 'react'
 const CreateBanners = () => {
 
+  // penampung data
   const [image, setImage] = useState(null);
   const [keterangan, setKeterangan] = useState("ini keterangan");
 
@@ -21,6 +22,8 @@ const CreateBanners = () => {
       console.error(error);
     }
   }
+
+
   return (
     <DefaultLayout>
       <Card className="animated fadeInDown p-3">

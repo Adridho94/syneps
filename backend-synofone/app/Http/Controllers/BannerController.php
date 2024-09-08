@@ -55,8 +55,23 @@ class BannerController extends Controller
         $id = Crypt::decryptString($id);
         // return $id;
         $banner = Banner::find($id);
+
+        $filePath = public_path('uploads/banner/' . $banner->image);
+        $filename = $banner->realimage;
+
+        if ($request->file('image')) {
+            $file = $request->file('image');
+            $filename = "Gambar" . time() . '.' . $file->getClientOriginalExtension();
+            // menyimpan file kedalam folder directory
+            $file->move('uploads/banner/', $filename);
+            // menghapus file yang lama
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
+        }
+
         // proses memasukan data baru ke dalam variabel $banner
-        $banner->image = $request->image;
+        $banner->image = $filename;
         $banner->keterangan = $request->keterangan;
         $banner->save();
         // memberikan response berhasil dan mengembalikan ke client 
