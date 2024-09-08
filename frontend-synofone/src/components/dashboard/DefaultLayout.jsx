@@ -22,7 +22,9 @@ const DefaultLayout = ({children}) => {
                 {/* Sidebar di sisi kiri halaman */}
                 <aside className="bg-primary p-3" style={{ width: "250px" }}>
                     {/* Judul sidebar */}
+                    <Link to={'/'}>
                     <h1 className="text-white text-center mt-2 mb-3">Start</h1>
+                    </Link>
                     
                     {/* Menu navigasi dalam bentuk kolom */}
                     <Nav className="flex-column">
