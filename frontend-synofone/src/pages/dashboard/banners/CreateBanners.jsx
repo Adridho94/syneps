@@ -2,12 +2,13 @@ import { Form, Button, Card } from "react-bootstrap";
 import DefaultLayout from "../../../components/dashboard/DefaultLayout";
 import Api from "../../../routes/Api.jsx";
 import { useState } from 'react'
+import{useNavigate} from 'react-router-dom'
 const CreateBanners = () => {
 
   // penampung data
   const [image, setImage] = useState(null);
   const [keterangan, setKeterangan] = useState("ini keterangan");
-
+  const navigate = useNavigate();
   // function input data
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,6 +19,7 @@ const CreateBanners = () => {
     try {
       const response = await Api.post("/banner", formData);
       console.log(response.data);
+      navigate('/admin/banners')
     } catch (error) {
       console.error(error);
     }

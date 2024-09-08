@@ -84,9 +84,12 @@ class BannerController extends Controller
     public function destroy(string $id)
     {
         // mencari data banner berdasarkan id dan di tampung ke dalam variabel $banner
+        $id = Crypt::decryptString($id);
         $banner = Banner::find($id);
+        // return $banner;
         $file = $banner->Realimage;
         // return $file;
+
         // menghapus file yang ada di dalam folder uploads/banner
         unLink('uploads/banner/' . $file);
         // proses menghapus data banner

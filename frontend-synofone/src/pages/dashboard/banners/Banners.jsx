@@ -8,19 +8,31 @@ import { useState, useEffect } from 'react'
 
 const Banners = () => {
 
-
     const [banners, setBanners] = useState([]);
 
-    useEffect(() => {
-        const getBanner = async () => {
+    function deleteData(id) {
+        return async () => {
             try {
-                const response  = await Api.get('/banners');
-                console.log(response.data.data)
-                setBanners(response.data.data)
-            } catch (error){
+                // alert('Are you sure to delete this data?')
+                const response = await Api.delete(`/banner/${id}`);
+                console.log(response.data);
+                getBanner();
+            } catch (error) {
                 console.error(error)
             }
-        };
+        }
+    }
+
+    const getBanner = async () => {
+        try {
+            const response = await Api.get('/banners');
+            // console.log(response.data.data)
+            setBanners(response.data.data)
+        } catch (error) {
+            console.error(error)
+        }
+    };
+    useEffect(() => {
         getBanner();
     }, [0])
     return (
@@ -42,21 +54,21 @@ const Banners = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {banners.map((item,index)=>(
-                        <tr key={item.id || index}>
-                            <td>
-                                {index+1}</td>
-                            <td>
-                                <img src={item.image} alt="" width="50" />
+                        {banners.map((item, index) => (
+                            <tr key={item.id || index}>
+                                <td>
+                                    {index + 1}</td>
+                                <td>
+                                    <img src={item.image} alt="" width="50" />
                                 </td>
-                            <td>{item.keterangan}</td>
-                            <td>
-                                <Link to={"/admin/banners/"+item.id}>
-                                    <Button className="btn-warning text-white me-2" size="sm">Edit</Button>
-                                </Link>
-                                <Button className="btn-danger" size="sm">Delete</Button>
-                            </td>
-                        </tr>
+                                <td>{item.keterangan}</td>
+                                <td>
+                                    <Link to={"/admin/banners/" + item.id}>
+                                        <Button className="btn-warning text-white me-2" size="sm">Edit</Button>
+                                    </Link>
+                                    <Button className="btn-danger" size="sm" onClick={deleteData(item.id)} >Delete</Button>
+                                </td>
+                            </tr>
                         ))}
                     </tbody>
                 </Table>
