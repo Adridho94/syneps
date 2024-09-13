@@ -9,6 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CartitemController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\BrandController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -34,6 +35,11 @@ Route::post('/banner/{id}',[BannerController::class,'update']);
 Route::get('/banner/{id}',[BannerController::class,'show']);
 Route::delete('/banner/{id}',[BannerController::class,'destroy']);
 
+Route::get('/brands',[BrandController::class,'index']);
+Route::post('/brand',[BrandController::class,'store']);
+Route::get('/brand/{id}',[BrandController::class,'show']);
+Route::post('/brand/{id}',[BrandController::class,'update']);
+Route::delete('/brand/{id}',[BrandController::class,'destroy']);
 
 // method pengambilan data keseluruhan dari database
 Route::get('/products',[ProductController::class,'index' ]);
