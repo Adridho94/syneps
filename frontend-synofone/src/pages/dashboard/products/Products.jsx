@@ -1,8 +1,26 @@
 import { Link } from "react-router-dom";
 import { Table, Button } from "react-bootstrap";
 import DefaultLayout from "../../../components/dashboard/DefaultLayout";
-
+import Api from "../../../routes/Api";
+import { useState, useEffect } from "react";
 const Products = () => {
+
+    const [products, setProducts] = useState([]);
+
+    const getProducts = async () => {
+        try {
+            const response = await Api.get('/products');
+            setProducts(response.data.data);
+            console.log(response.data.data);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    useEffect(() => {
+        getProducts();
+    }, []);
+
     return (
         <DefaultLayout>
             <div className="d-flex justify-content-between alig-items-center mb-3 mt-2">
@@ -28,25 +46,30 @@ const Products = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Loading...</td>
-                            <td>Loading...</td>
-                            <td>Loading...</td>
-                            <td>Loading...</td>
-                            <td>Loading...</td>
-                            <td>Loading...</td>
-                            <td>Loading...</td>
-                            <td>
-                                <Link to="/admin/products/:id">
-                                    <Button className="btn-warning text-white me-2" size="sm">
-                                        Edit
+                        {products.map((item, index) => (
+
+                            <tr key={item.id || index}>
+                                <td>{index +1}</td>
+                                <td>
+                                <img src={item.image} alt="" width="50" />
+                                </td>
+                                <td>{item.title}</td>
+                                <td>{item.spesification}</td>
+                                <td>{item.price}</td>
+                                <td>{item.qty}</td>
+                                <td>{item.warna}</td>
+                                <td>
+                                    <Link to={`/admin/products/${item.id}`}>
+                                        <Button className="btn-warning text-white me-2" size="sm">
+                                            Edit
+                                        </Button>
+                                    </Link>
+                                    <Button className="btn-danger" size="sm">
+                                        Delete
                                     </Button>
-                                </Link>
-                                <Button className="btn-danger" size="sm">
-                                    Delete
-                                </Button>
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
                 </Table>
             </div>

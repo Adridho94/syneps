@@ -45,6 +45,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        // return $request;
         $request->validate(
             [
                 'image' => 'required',
@@ -103,7 +104,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        return $request;
     }
 
     /**
