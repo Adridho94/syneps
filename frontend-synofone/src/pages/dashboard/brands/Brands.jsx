@@ -47,6 +47,7 @@ const Brands = () => {
                         <tr>
                             <th>ID</th>
                             <th>Image</th>
+                            <th>Title</th>
                             <th>Keterangan</th>
                             <th>Action</th>
                         </tr>
@@ -60,6 +61,7 @@ const Brands = () => {
                                 <td>
                                     <img src={item.gambar} alt="" width="50" />
                                 </td>
+                                <td>{item.title}</td>
                                 <td>{item.keterangan}</td>
                                 <td>
                                     <Link to={"/admin/brands/"+item.id}>

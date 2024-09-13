@@ -57,7 +57,7 @@ const EditBrands = () => {
       const response = await Api.post(`/brand/${id}`, formData); // Kirim data ke API
       console.log(response.data
     );
-      navigate('/admin/brand'); // Redirect ke halaman brand setelah update
+      navigate('/admin/brands'); // Redirect ke halaman brand setelah update
     } catch (error) {
       console.error(error);
     }
@@ -110,7 +110,7 @@ const EditBrands = () => {
           <Button type="submit" className="btn-primary me-2" size="sm">
             Save
           </Button>
-          <Button onClick={() => navigate('/admin/brand')} className="btn-danger" size="sm">
+          <Button onClick={() => navigate('/admin/brands')} className="btn-danger" size="sm">
             Close
           </Button>
         </Form>

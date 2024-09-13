@@ -1,17 +1,36 @@
 import { Row, Container, Col } from "react-bootstrap";
-
+import { useState, useEffect } from 'react';
+import Api from '../../routes/Api.jsx';
 const BrandComponent = () => {
+    const [brands, setBrands] = useState([]);
+
+    const getBrands = async () => {
+        try {
+            const response = await Api.get('/brands');
+            setBrands(response.data.data);
+            console.log(response.data.data);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    useEffect(() => {
+        getBrands();
+    }, []);
     return (
         <>
             <Container>
                 <div className="brand mt-5">
                     {/* Desktop View */}
                     <Row>
-                        <Col lg={2} className="d-none d-lg-block">
-                            <img src="/src/assets/ic-samsung.png" alt="" />
-                        </Col>
+                        {brands.map((brand, index) => (
 
-                        <Col lg={2} className="d-none d-lg-block">
+                            <Col lg={2} className="d-none d-lg-block" key={brand.id || index}>
+                                <img src={brand.gambar} alt="" />
+                            </Col>
+                        ))}
+
+                        {/* <Col lg={2} className="d-none d-lg-block">
                             <img src="/src/assets/ic-xiaomi.png" alt="" />
                         </Col>
 
@@ -29,7 +48,7 @@ const BrandComponent = () => {
 
                         <Col lg={2} className="d-none d-lg-block">
                             <img src="/src/assets/ic-vivo.png" alt="" />
-                        </Col>
+                        </Col> */}
                     </Row>
                     {/* Mobile View */}
                     <div className="mobile-brand d-block d-lg-none">

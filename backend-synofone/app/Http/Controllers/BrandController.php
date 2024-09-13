@@ -102,23 +102,27 @@ class BrandController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $validator = Validator::make($request->all(), [
-            'title' => 'required',
-            'gambar' => 'required||image||mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'keterangan' => 'required'
-        ]);
+        // return $request;
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'title' => 'required',
+                // 'gambar' => 'required',
+                'keterangan' => 'required'
+            ]
+        );
 
         if ($validator->fails()) {
             return response()->json([
                 'message' => 'Validasi gagal',
-                'errors' => $validator->errors()
+                'errors' => "gagal".$validator->errors()
             ], 400);
         }
 
         $brand = Brand::find($id);
 
         if ($brand) {
-            $fileName = "";
+            $fileName = $brand->real_gambar;
             if($request->hasFile('gambar')) {
                 $file = $request->file('gambar');
                 $fileName ='brand'. time().".".$file->getClientOriginalExtension();
@@ -127,11 +131,6 @@ class BrandController extends Controller
                 if(file_exists($path)){
                     unlink($path);
                 }
-            }else{
-                return response()->json([
-                    'message' => 'Gambar harus berupa file',
-                    'data' => null
-                ], 404);
             }
 
             $brand->update([
