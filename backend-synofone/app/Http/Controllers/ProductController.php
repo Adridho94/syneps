@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
@@ -45,21 +46,27 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        // return $request;
-        $request->validate(
-            [
-                'image' => 'required',
-                'title' => 'required',
-                'spesification' => 'required',
-                'price' => 'required',
-                'qty' => 'required',
-                'warna' => 'required'
-            ]
-        );
+        $dataValidate = Validator::make($request->all(), [
+            'image' => 'required||mimes:jpg,jpeg,png|max:2048',
+            'title' => 'required',
+            'spesification' => 'required',
+            'price' => 'required',
+            'qty' => 'required',
+            'warna' => 'required'
+        ]);
+
+            $filename ="";
+
+            if ($request->hasFile('image')) {
+                $file = $request->file('image');
+                $filename = "produk".time() . '.' . $file->getClientOriginalExtension();
+                $file->move('uploads/products/', $filename);
+            }
+
 
         $product = Product::create(
             [
-                'image' => $request->image,
+                'image' => $filename,
                 'title' => $request->title,
                 'spesification' => $request->spesification,
                 'price' => $request->price,
@@ -87,7 +94,8 @@ class ProductController extends Controller
             [
                 'message' => 'Berikut Data Produk',
                 'data' => $product
-            ],200
+            ],
+            200
         );
     }
 
@@ -104,7 +112,59 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        return $request;
+        $dataValidate = Validator::make($request->all(), [
+            'image' => 'mimes:jpg,jpeg,png,svg|max:2048',
+            'title' => 'required',
+            'spesification' => 'required',
+            'price' => 'required',
+            'qty' => 'required',
+            'warna' => 'required'
+        ]);
+
+        if ($dataValidate->fails()) {
+            return response()->json(
+                [
+                    'message' => 'Data tidak valid',
+                    'data' => $dataValidate->errors()
+                ],
+                400
+            );
+        }
+
+        $product = Product::find($id);
+        $filename=$product->real_image;
+        
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $filename = "produk".time() . '.' . $file->getClientOriginalExtension();
+            $file->move('uploads/products/', $filename);
+            $path = public_path('uploads/products/') . $product->real_image;
+            if (file_exists($path))
+            {
+                unlink($path);
+            }
+        }
+
+        $product->update(
+            [
+                'image' => $filename,
+                'title' => $request->title,
+                'spesification' => $request->spesification,
+                'price' => $request->price,
+                'qty' => $request->qty,
+                'warna' => $request->warna
+            ]
+        );
+
+        return response()->json(
+            [
+                'message' => 'Produk berhasil diupdate',
+                'data' => $product
+            ],
+            200
+        );
+
+
     }
 
     /**
@@ -112,6 +172,28 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $product = Product::find($id);
+        if ($product) {
+            $path = public_path('uploads/products/') . $product->real_image;
+            if (file_exists($path)) {
+                unlink($path);
+            }
+            $product->delete();
+            return response()->json(
+                [
+                    'message' => 'Produk berhasil dihapus',
+                    'data' => $product
+                ],
+                200
+            );
+        } else {
+            return response()->json(
+                [
+                    'message' => 'Produk tidak ditemukan',
+                    'data' => null
+                ],
+                404
+            );
+        }
     }
 }

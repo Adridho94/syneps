@@ -25,7 +25,7 @@ class ProductFactory extends Factory
     {
         $this->faker->addProvider(new BrandPhoneProvider($this->faker));
         return [
-            'image' => $this->faker->image('public/uploads', 640, 480, null, false),
+            'image' => $this->faker->image('public/uploads/products', 640, 480, null, false),
             'title' => $this->faker->brandPhone,
             'spesification' => $this->faker->sentence,
             'price' => $this->faker->numberBetween(10000, 100000),

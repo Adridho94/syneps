@@ -16,6 +16,10 @@ class Product extends Model
 
     public function getImageAttribute($value)
     {
-        return url('uploads/' . $value);
+        return url('uploads/products/' . $value);
+    }
+    public function getRealImageAttribute()
+    {
+        return $this->attributes['image'];
     }
 }
