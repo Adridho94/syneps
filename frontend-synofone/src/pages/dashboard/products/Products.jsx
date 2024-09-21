@@ -3,6 +3,9 @@ import { Table, Button } from "react-bootstrap";
 import DefaultLayout from "../../../components/dashboard/DefaultLayout";
 import Api from "../../../routes/Api";
 import { useState, useEffect } from "react";
+
+
+
 const Products = () => {
 
     const [products, setProducts] = useState([]);
@@ -17,10 +20,23 @@ const Products = () => {
         }
     }
 
+
+
     useEffect(() => {
         getProducts();
     }, []);
 
+    const deleteData = (id) => {
+        return async () => {
+            try {
+                const response = await Api.delete(`/product/${id}`);
+                console.log(response.data);
+                getProducts();
+            } catch (error) {
+                console.error(error)
+            }
+        }
+    }
     return (
         <DefaultLayout>
             <div className="d-flex justify-content-between alig-items-center mb-3 mt-2">
@@ -47,15 +63,14 @@ const Products = () => {
                     </thead>
                     <tbody>
                         {products.map((item, index) => (
-
                             <tr key={item.id || index}>
-                                <td>{index +1}</td>
+                                <td>{index + 1}</td>
                                 <td>
-                                <img src={item.image} alt="" width="50" />
+                                    <img src={item.image} alt="" width="50" />
                                 </td>
                                 <td>{item.title}</td>
                                 <td>{item.spesification}</td>
-                                <td>{item.price}</td>
+                                <td>{item.price_rupiah}</td>
                                 <td>{item.qty}</td>
                                 <td>{item.warna}</td>
                                 <td>
@@ -64,9 +79,7 @@ const Products = () => {
                                             Edit
                                         </Button>
                                     </Link>
-                                    <Button className="btn-danger" size="sm">
-                                        Delete
-                                    </Button>
+                                    <Button className="btn-danger" size="sm" onClick={deleteData(item.id)} >Delete</Button>
                                 </td>
                             </tr>
                         ))}

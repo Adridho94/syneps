@@ -1,4 +1,4 @@
-import { Form, Button, Card, Row, Col,FloatingLabel } from "react-bootstrap";
+import { Form, Button, Card, Row, Col, FloatingLabel } from "react-bootstrap";
 import DefaultLayout from "../../../components/dashboard/DefaultLayout";
 import { useEffect, useState } from "react";
 import Api from "../../../routes/Api";
@@ -9,7 +9,6 @@ const EditProducts = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [product, setProduct] = useState({});
-
   const getProduct = async () => {
     try {
       const response = await Api.get(`/product/${id}`);
@@ -32,7 +31,14 @@ const EditProducts = () => {
     }));
   }
 
- const handleSubmit = async (e) => {
+  const handleImageChange = (e) => {
+    setProduct(prevState => ({
+      ...prevState,
+      image: e.target.files[0] // ambil file pertama dari input file, ganti image 
+    }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append('image', product.image);
@@ -43,9 +49,15 @@ const EditProducts = () => {
     formData.append('warna', product.warna);
 
     try {
-      const response = await Api.post(`/product/${id}`, formData);
+      const response = await Api.post(`/product/${id}`, formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
       console.log(response);
-      // navigate('/admin/products');
+      navigate('/admin/products');
     } catch (error) {
       console.error(error);
     }
@@ -58,11 +70,16 @@ const EditProducts = () => {
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-2">
             <Form.Label htmlFor="image">Image</Form.Label>
-            <Form.Control type="file" placeholder="Image" />
+            <Form.Control
+              type="file"
+              placeholder="Image"
+              name="image"
+              onChange={handleImageChange}
+            />
           </Form.Group>
           <Form.Group className="mb-2">
             <Form.Label htmlFor="title">Title</Form.Label>
-            <Form.Control type="text" placeholder="Masukkan Title" name="title" value={product.title || ''} 
+            <Form.Control type="text" placeholder="Masukkan Title" name="title" value={product.title || ''}
               onChange={handleChange}
             />
           </Form.Group>
@@ -77,30 +94,30 @@ const EditProducts = () => {
                 onChange={handleChange}
               />
             </FloatingLabel>
-            
+
           </Form.Group>
           <Form.Group className="mb-2">
             <Form.Label htmlFor="price">Price</Form.Label>
             <Form.Control type="number" placeholder="Masukkan Price"
               name="price"
-              value={product.price || ''}
+              value={ product.price ||''}
               onChange={handleChange}
             />
           </Form.Group>
           <Form.Group className="mb-2">
             <Form.Label htmlFor="qty">Qty</Form.Label>
             <Form.Control type="number" placeholder="Masukkan Qty"
-            name="qty"
-            value={product.qty || ''}
-            onChange={handleChange}
+              name="qty"
+              value={product.qty || ''}
+              onChange={handleChange}
             />
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label htmlFor="warna">Warna</Form.Label>
-            <Form.Control type="text" placeholder="Masukkan Warna" 
-            name="warna"
-            value={product.warna || ''}
-            onChange={handleChange}
+            <Form.Control type="text" placeholder="Masukkan Warna"
+              name="warna"
+              value={product.warna || ''}
+              onChange={handleChange}
             />
           </Form.Group>
           <Button type="submit" className="btn-primary me-2" size="sm">

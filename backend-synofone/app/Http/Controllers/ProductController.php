@@ -14,6 +14,9 @@ class ProductController extends Controller
     public static function index()
     {
         $products = Product::all();
+        foreach ($products as $product) {
+            $product->price_rupiah = 'Rp ' . number_format($product->price, 0, ',', '.');
+        }
         if ($products->isEmpty()) {
             return response()->json(
                 [
@@ -89,11 +92,13 @@ class ProductController extends Controller
     public function show(string $id)
     {
         $product = Product::find($id);
-
+        $realPrice =$product->real_price;
         return response()->json(
             [
                 'message' => 'Berikut Data Produk',
-                'data' => $product
+                'data' => $product,
+                // 'price'=>$realPrice
+
             ],
             200
         );

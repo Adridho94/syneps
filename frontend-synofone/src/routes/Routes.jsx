@@ -27,6 +27,7 @@ import PrivateRoutes from "./PrivateRoutes";
 const RouteIndex = () => {
     return (
         <Routes>
+            <Route path='*' element={<h1>404 Not Found</h1>} />
             {/* =================route customer==================*/}
             <Route path='/' Component={LandingPage} />
             <Route path='/detail' Component={DetailPage} />

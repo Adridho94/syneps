@@ -22,4 +22,11 @@ class Product extends Model
     {
         return $this->attributes['image'];
     }
+
+    // public function getPriceAttribute($value)
+    // {
+    //     return 'Rp ' . number_format($value, 0, ',', '.');
+    // }
+
+   
 }
