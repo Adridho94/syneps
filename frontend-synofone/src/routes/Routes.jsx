@@ -35,7 +35,7 @@ const RouteIndex = () => {
             <Route path='/status' Component={StatusPage} />
             <Route path='/finish' Component={FinishPage} />
             {/* ================================================ */}
-            
+
             <Route path='/login' Component={LoginPage} />
             <Route path='/daftar' Component={DaftarPage} />
             {/* <Route path='admin/dashboard' Component={Dashboard} /> */}
@@ -83,9 +83,10 @@ const RouteIndex = () => {
             <Route path="admin/products" element={<PrivateRoutes>
                 <Products />
             </PrivateRoutes>} />
-            <Route path="admin/products/new" element={<PrivateRoutes>
-                <CreateProducts />
-            </PrivateRoutes>} />
+            <Route path="admin/products/new" element={
+                <PrivateRoutes>
+                    <CreateProducts />
+                </PrivateRoutes>} />
             <Route path="admin/products/:id" element={<PrivateRoutes>
                 <EditProducts />
             </PrivateRoutes>} />
