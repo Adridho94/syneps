@@ -3,6 +3,7 @@ import DefaultLayout from "../../../components/dashboard/DefaultLayout";
 import Api from "../../../routes/Api.jsx";
 import {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 const CreateUsers = () => {
 
     const [users, setUsers] = useState({
@@ -31,11 +32,23 @@ const CreateUsers = () => {
             navigate('/admin/users');
         } catch (error) {
             console.error(error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error.response.data.status,
+            })
             console.log(error.response.data.status)
         }
     };
 
-
+const previewPassword = () => {
+    const password = document.getElementById('password');
+    if (password.type === 'password') {
+        password.type = 'text';
+    } else {
+        password.type = 'password';
+    }
+}
     return (
         <DefaultLayout>
             <Card className="animated fadeInDown p-3">
@@ -63,11 +76,15 @@ const CreateUsers = () => {
                     </Form.Group>
                     <Form.Group className="mb-2">
                         <Form.Label htmlFor="password">Password</Form.Label>
-                        <Form.Control type="password" placeholder="Masukkan password"
+                        <Form.Control 
+                        id="password"
+                        type="password" 
+                        placeholder="Masukkan password"
                         name="password"
                         value={users.password}
                         onChange={handleChange}
                         />
+                        <div className="btn btn-danger m-2 " onClick={previewPassword}>Intip Password</div>
                     </Form.Group>
                     <Form.Group className="mb-2">
                         <Form.Label htmlFor="password_confirmation">Password Confirmation</Form.Label>
