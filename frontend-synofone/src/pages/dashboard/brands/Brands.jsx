@@ -3,6 +3,7 @@ import { Button, Table } from "react-bootstrap"
 import DefaultLayout from "../../../components/dashboard/DefaultLayout";
 import Api from '../../../routes/Api';
 import { useState, useEffect } from 'react';
+import Swal from 'sweetalert2';
 const Brands = () => {
     const [brands, setBrands] = useState([]);
     const getBrands = async () => {
@@ -16,12 +17,31 @@ const Brands = () => {
         }
     }
 
+
     const deleteData = (id) => {
         return async () => {
             try {
-                const response = await Api.delete(`/brand/${id}`);
-                console.log(response.data);
-                getBrands();
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then(async (result) => {
+                    if (result.isConfirmed) {
+                        const response = await Api.delete(`/brand/${id}`);
+                        console.log(response.data);
+                        getBrands();
+                        Swal.fire(
+                            'Deleted!',
+                            'Your file has been deleted.',
+                            'success'
+                        )
+                    }
+                }
+                )
             } catch (error) {
                 console.error(error)
             }

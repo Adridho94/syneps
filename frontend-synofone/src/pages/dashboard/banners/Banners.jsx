@@ -4,7 +4,7 @@ import DefaultLayout from "../../../components/dashboard/DefaultLayout"
 // ini untuk memanggil configurasi axios
 import Api from '../../../routes/Api.jsx'
 import { useState, useEffect } from 'react'
-
+import Swal from 'sweetalert2'
 
 const Banners = () => {
 
@@ -13,11 +13,33 @@ const Banners = () => {
     function deleteData(id) {
         return async () => {
             try {
-                // alert('Are you sure to delete this data?')
-                const response = await Api.delete(`/banner/${id}`);
-                console.log(response.data);
-                getBanner();
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then(async (result) => {
+                    if (result.isConfirmed) {
+                        const response = await Api.delete(`/banner/${id}`);
+                        console.log(response.data);
+                        getBanner();
+                        Swal.fire(
+                            'Deleted!',
+                            'Your file has been deleted.',
+                            'success'
+                        )
+                    }
+                }
+                )
             } catch (error) {
+                Swal.fire(
+                    'Error!',
+                    'Your file has not been deleted.',
+                    'error'
+                )
                 console.error(error)
             }
         }
