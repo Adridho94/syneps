@@ -40,9 +40,11 @@ class UserController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => bcrypt($request->password)
+            'password' => bcrypt($request->password),
+            'contact' => $request->contact ?? null,
+            'alamat' => $request->alamat ?? null
         ]);
-        
+
         return response()->json([
             'status' => 'Data User Berhasil Ditambahkan',
             'data' => $user
@@ -68,13 +70,17 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users,email,' . $id,
-            'password' => 'required',
-            'password_confirmation' => 'required'
         ]);
-        if ($request->password != $request->password_confirmation) {
-            return response()->json([
-                'status' => 'Password Tidak Sama'
-            ], 400);
+        if ($request->password != null) {
+            $request->validate([
+                'password' => 'required',
+                'password_confirmation' => 'required'
+            ]);
+            if ($request->password != $request->password_confirmation) {
+                return response()->json([
+                    'status' => 'Password Tidak Sama'
+                ], 400);
+            }
         }
         $user = User::find($id);
 
@@ -86,7 +92,11 @@ class UserController extends Controller
 
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->password = bcrypt($request->password);
+        if ($request->password != null)
+        {
+            $user->password = bcrypt($request->password);
+        }
+        $user->role = $request->role ?? $user->role;
         $user->save();
 
         return response()->json([

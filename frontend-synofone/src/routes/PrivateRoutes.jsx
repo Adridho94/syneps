@@ -3,8 +3,8 @@ import { Navigate } from 'react-router-dom';
 
 const PrivateRoutes = ({children}) => {
     const token = Cookies.get('token');
-
-    if (!token)
+    const role = Cookies.get('role');
+    if (!token && role !== '1')
     {
         return <Navigate to='/' replace />
     }

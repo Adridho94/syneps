@@ -30,6 +30,7 @@ class UserSeeder extends Seeder
         $user->password = bcrypt('admin123');
         $user->save();
 
+        User::factory(10)->create();
 
         // method eloquent
         // User::create([

@@ -24,6 +24,7 @@ const LoginPage = () => {
         }).then((response) => {
             // console.log(response.data.token);
             Cookies.set("token", response.data.token);
+            Cookies.set('role', response.data.role);
             navigate('/admin/dashboard');
         }).catch((error) => {
             setValidation(error.response.data);
