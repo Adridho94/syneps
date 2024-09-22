@@ -31,6 +31,12 @@ class UserController extends Controller
             'password_confirmation' => 'required'
         ]);
 
+        if ($request->password != $request->password_confirmation) {
+            return response()->json([
+                'status' => 'Password Tidak Sama'
+            ], 400);
+        }
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,

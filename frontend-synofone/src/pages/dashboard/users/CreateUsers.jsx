@@ -2,6 +2,7 @@ import { Form, Button, Card } from "react-bootstrap";
 import DefaultLayout from "../../../components/dashboard/DefaultLayout";
 import Api from "../../../routes/Api.jsx";
 import {useState} from 'react';
+import { useNavigate } from 'react-router-dom';
 const CreateUsers = () => {
 
     const [users, setUsers] = useState({
@@ -11,6 +12,7 @@ const CreateUsers = () => {
         password_confirmation: ''
     });
 
+    const navigate = useNavigate();
     // function untuk menghandle perubahan di form input
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -26,8 +28,10 @@ const CreateUsers = () => {
         try {
             const response = await Api.post('/user', users);
             console.log(response.data);
+            navigate('/admin/users');
         } catch (error) {
             console.error(error);
+            console.log(error.response.data.status)
         }
     };
 
@@ -49,15 +53,29 @@ const CreateUsers = () => {
                     </Form.Group>
                     <Form.Group className="mb-2">
                         <Form.Label htmlFor="email">Email</Form.Label>
-                        <Form.Control type="email" placeholder="Masukkan Email" />
+                        <Form.Control 
+                        type="email" 
+                        placeholder="Masukkan Email" 
+                        name="email"
+                        value={users.email}
+                        onChange={handleChange}
+                        />
                     </Form.Group>
                     <Form.Group className="mb-2">
                         <Form.Label htmlFor="password">Password</Form.Label>
-                        <Form.Control type="password" placeholder="Masukkan password" />
+                        <Form.Control type="password" placeholder="Masukkan password"
+                        name="password"
+                        value={users.password}
+                        onChange={handleChange}
+                        />
                     </Form.Group>
                     <Form.Group className="mb-2">
                         <Form.Label htmlFor="password_confirmation">Password Confirmation</Form.Label>
-                        <Form.Control type="password" placeholder="Masukkan password konfirmasi" />
+                        <Form.Control type="password" placeholder="Masukkan password konfirmasi" 
+                        name="password_confirmation"
+                        value={users.password_confirmation}
+                        onChange={handleChange}
+                        />
                     </Form.Group>
 
                     <Button type="submit" className="btn-primary" size="sm">
