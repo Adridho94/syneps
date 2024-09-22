@@ -7,9 +7,7 @@ import Swal from "sweetalert2";
 
 
 const Products = () => {
-
     const [products, setProducts] = useState([]);
-
     const getProducts = async () => {
         try {
             const response = await Api.get('/products');
@@ -19,8 +17,6 @@ const Products = () => {
             console.error(error);
         }
     }
-
-
 
     useEffect(() => {
         getProducts();
@@ -46,10 +42,12 @@ const Products = () => {
                             'Deleted!',
                             'Your file has been deleted.',
                             'success'
-                        )}}
+                        )
+                    }
+                }
                 )
-                
-            } catch (error) {
+            }
+            catch (error) {
                 console.error(error)
             }
         }
