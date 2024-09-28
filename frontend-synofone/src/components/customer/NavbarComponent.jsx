@@ -12,7 +12,11 @@ const NavbarComponent = () => {
             setToken(true);
         }
     }
-
+    const handleLogout =()=>{
+        Cookies.remove("token")
+        Cookies.remove("role")
+        navigate('/');
+    }
     useEffect(() => {
         setRole(Cookies.get('role'));
         checkToken();
@@ -33,18 +37,22 @@ const NavbarComponent = () => {
                             </Form>
                             <hr className="d-block d-lg-none text-light" />
                             {role === '1' ? (
-                                <Link href="/admin/dashboard" className="btn btn-success me-2 text-light">Dashboard</Link>
+                                <Link to="/admin/dashboard" className="btn btn-success me-2 text-light">Dashboard</Link>
                             ) : (
                                 ""
                             )}
                             {token ? (
-                                <Link to="/logout" className="btn btn-outline-danger text-light">Logout</Link>
+                                <div to="/logout" className="btn btn-outline-danger text-light" onClick={handleLogout}>Logout</div>
                             ) : (
-                                <Link to="/login" className="btn btn-outline-light text-light">Login</Link>
-                            )
-                            && (
+                                <>
+                                <Link to="/login" className="btn btn-outline-light text-light">Login</Link>,
                                 <Link to="/daftar" className="btn btn-outline-light text-light">Daftar</Link>
+                                </>
                             )
+                                // && (
+                                //     // <Link to="/login" className="btn btn-outline-light text-light">Login</Link>,
+                                //     <Link to="/daftar" className="btn btn-outline-light text-light">Daftar</Link>
+                                // )
 
                             }
                             {/* <Link to="/daftar" className="btn btn-outline-light text-light">Daftar</Link> */}

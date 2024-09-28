@@ -12,6 +12,7 @@ const DefaultLayout = ({children}) => {
 
     const handleLogout =()=>{
         Cookies.remove("token")
+        Cookies.remove("role")
         navigate('/');
     }
     return (
