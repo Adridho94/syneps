@@ -9,15 +9,9 @@ class UserController extends Controller
 {
     public function checkAuth()
     {
-        // return "oke";
-        if ($user = auth()->user()) {
-            return response()->json([
-                'status' => 'Berhasil',
-                'data' => $user
-            ], 200);
-        // $user = Auth::user();
-        // return $user;
-        }
+        $user = Auth::user();
+        // $user =auth()->user();
+        return $user;
     }
     public function index()
     {

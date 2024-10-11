@@ -22,12 +22,14 @@ use App\Http\Controllers\BrandController;
 */
 
 Route::post('/login', [AuthController::class, 'login']);
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-    
-    // Route::get('/checkauth',[UserController::class,'checkAuth']);
+Route::post('/logout', [AuthController::class, 'logout']);
+
+Route::middleware(('auth:sanctum'))->group(function () {
+Route::get('/checkauth', [UserController::class, 'checkAuth']);
+Route::post('/cart',[CartController::class,'store']);
+
 });
-Route::middleware('auth:api')->get('/checkauth', [UserController::class, 'checkAuth']);
+// Route::middleware('auth:sanctum')->get('/checkauth', [UserController::class, 'checkAuth']);
 
 Route::get('/banners',[BannerController::class,'index']);
 Route::post('/banner',[BannerController::class,'store']);
@@ -56,7 +58,7 @@ Route::post('/user/{id}',[UserController::class,'update']);
 Route::delete('/user/{id}',[UserController::class,'destroy']);
 
 
-Route::post('/cart',[CartController::class,'store']);
+// Route::post('/cart',[CartController::class,'store']);
 Route::get('/carts',[CartController::class,'index']);
 
 Route::get('/cartitem',[CartitemController::class,'index']);

@@ -3,14 +3,17 @@ import NavbarComponent from "../../components/customer/NavbarComponent";
 import UnggulanComponent from "../../components/customer/UnggulanComponent";
 
 import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
-import { Link, useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Api from "../../routes/Api";
+import Cookies from "js-cookie";
+import Swal from "sweetalert2"; // Import SweetAlert2
 
 const DetailPage = () => {
     const [jumlah, setJumlah] = useState(1);
     const [product, setProduct] = useState({});
     const { id } = useParams();
+    const navigate = useNavigate(); // Untuk redirect
 
     // Mengubah jumlah produk yang ingin ditambahkan ke keranjang
     const handleJumlahChange = (event) => {
@@ -28,13 +31,35 @@ const DetailPage = () => {
         }
     };
 
-    // Menambahkan produk ke keranjang belanja
+    // Fungsi untuk menambahkan produk ke keranjang
     const handleCart = async () => {
         try {
-            const response = await Api.get('/checkauth');
+            const response = await Api.post('/cart', {
+                product_id: id,
+                qty: jumlah,
+            });
             console.log("Product added to cart:", response);
+
+            // Tampilkan alert sukses dengan Swal.fire
+            Swal.fire({
+                title: 'Berhasil!',
+                text: 'Produk berhasil ditambahkan ke keranjang.',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                navigate('/cart');  // Redirect ke halaman cart setelah menambahkan
+            });
+
         } catch (error) {
             console.log("Error adding to cart:", error);
+
+            // Tampilkan alert error dengan Swal.fire
+            Swal.fire({
+                title: 'Gagal!',
+                text: 'Terjadi kesalahan saat menambahkan ke keranjang.',
+                icon: 'error',
+                confirmButtonText: 'Coba Lagi'
+            });
         }
     };
 

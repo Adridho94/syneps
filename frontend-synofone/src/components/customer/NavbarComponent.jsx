@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
 import logo from "../../assets/logo.png";
 import Cookies from "js-cookie";
 import { useState, useEffect } from 'react';
-
+import Api from "../../routes/Api";
 const NavbarComponent = () => {
     const [role, setRole] = useState('');
     const navigate = useNavigate(); // Initialize navigate
@@ -19,6 +19,8 @@ const NavbarComponent = () => {
     const handleLogout = () => {
         Cookies.remove("token");
         Cookies.remove("role");
+        const response = Api.post('/logout');
+        console.log(response);
         navigate('/'); // Arahkan ke halaman utama setelah logout
     };
 
