@@ -4,9 +4,21 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-
+use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
+    public function checkAuth()
+    {
+        // return "oke";
+        if ($user = auth()->user()) {
+            return response()->json([
+                'status' => 'Berhasil',
+                'data' => $user
+            ], 200);
+        // $user = Auth::user();
+        // return $user;
+        }
+    }
     public function index()
     {
         $users = User::all();
@@ -92,8 +104,7 @@ class UserController extends Controller
 
         $user->name = $request->name;
         $user->email = $request->email;
-        if ($request->password != null)
-        {
+        if ($request->password != null) {
             $user->password = bcrypt($request->password);
         }
         $user->role = $request->role ?? $user->role;

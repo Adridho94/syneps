@@ -24,9 +24,10 @@ use App\Http\Controllers\BrandController;
 Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+    
+    // Route::get('/checkauth',[UserController::class,'checkAuth']);
 });
-
-// Route::get('/banner', 'BannerController@index');
+Route::middleware('auth:api')->get('/checkauth', [UserController::class, 'checkAuth']);
 
 Route::get('/banners',[BannerController::class,'index']);
 Route::post('/banner',[BannerController::class,'store']);

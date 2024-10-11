@@ -25,7 +25,11 @@ const LoginPage = () => {
             // console.log(response.data.token);
             Cookies.set("token", response.data.token);
             Cookies.set('role', response.data.role);
+            const role = response.data.role;
+            if (role === '1') {
             navigate('/admin/dashboard');
+            }
+            navigate ('/');
         }).catch((error) => {
             setValidation(error.response.data);
         })

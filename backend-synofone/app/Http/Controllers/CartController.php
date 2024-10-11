@@ -5,20 +5,30 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\User;
+use App\Models\Cartitem;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
     public function store(Request $request)
     {
-        $request->validate([
-            'user_id' => 'required',
-        ]);
+        // return $request;
+        $user_id = Auth::user();
+        return $user_id;
         $cart = Cart::create([
-            'user_id' => $request->user_id,
+            'user_id' => $user_id,
+        ]);
+        $produk_id = $request->produk_id;
+        $jumlah = $request->jumlah;
+        $cart_id = $cart->id;
+        $cart_item = Cartitem::create([
+            'cart_id' => $cart_id,
+            'produk_id' => $produk_id,
+            'jumlah' => $jumlah
         ]);
         return response()->json([
             'message' => 'Cart berhasil ditambahkan',
-            'data' => $cart
+            'data' => $cart_item
         ], 200);
     }
 
