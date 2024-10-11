@@ -3,16 +3,37 @@ import NavbarComponent from "../../components/customer/NavbarComponent";
 import UnggulanComponent from "../../components/customer/UnggulanComponent";
 
 import { Container, Row, Col, Card, Form } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import { useState } from "react";
-
+import { Link, useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import Api from "../../routes/Api";
 const DetailPage = () => {
     const [jumlah, setJumlah] = useState(1);
+    const [product, setProduct] = useState({});
 
+    const { id } = useParams();
     const handleJumlahChange = (event) => {
         // ubah nilai jumlah saat input berubah
         setJumlah(parseInt(event.target.value));
     };
+    const getProduct = async () => {
+        try {
+            const response = await Api.get(`/product/${id}`);
+            setProduct(response.data.data);
+            console.log(response.data.data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    // const data = product.spesification  || '';
+    // const formattedData = data.split('\n').map((line, index) => (
+    //     <React.Fragment key={index}>
+    //         {line}
+    //         <br />
+    //     </React.Fragment>
+    // ));
+    useEffect(() => {
+        getProduct();
+    }, [id]);
 
     return (
         <>
@@ -20,31 +41,30 @@ const DetailPage = () => {
             <div id="detail">
                 <Container className="mt-5">
                     <Row>
+
                         <Col lg={5}>
                             <Card>
-                                <img src="/src/assets/hp3.png" alt="" />
+                                <img src={product.image} alt="" />
                             </Card>
                         </Col>
                         <Col lg={7}>
                             <div className="deskripsi">
-                                <h4>Iphone 15 Pro Max</h4>
+                                <h4>{product.title}</h4>
                                 <br />
                                 <div className="spec">
                                     <h6>Spesifikasi :</h6>
-                                    <ul>
-                                        <li>Chip A17 Pro, CPU 6‑core</li>
-                                        <li>GPU 6‑core</li>
-                                        <li>Layar 6.7 inch</li>
-                                        <li>Layar Super Retina XDR</li>
-                                    </ul>
+                                    <div style={{ whiteSpace: 'pre-line' }}>
+                                        {product.spesification}
+                                    </div>
                                 </div>
                                 <br />
                                 <div className="colors">
                                     <h6>Pilihan Warna :</h6>
                                     <div className="color-options mt-3">
-                                        <button className="btn me-2">Grey</button>
+                                        <button className="btn me-2">{product.warna}</button>
+                                        {/* <button className="btn me-2">Grey</button>
                                         <button className="btn me-2">Red</button>
-                                        <button className="btn me-2">Purple</button>
+                                        <button className="btn me-2">Purple</button> */}
                                     </div>
                                 </div>
                                 <br />
@@ -61,7 +81,10 @@ const DetailPage = () => {
                                             />
                                         </Form>
                                     </Col>
-                                    <Col lg="10">
+                                    <Col lg={2}>
+                                        <h6><span className="text-danger">Stok: </span>{product.qty}</h6>
+                                    </Col>
+                                    <Col lg={8}>
                                         <Link to="/login" className="btn btn-primary w-100">Masukkan Keranjang</Link>
                                     </Col>
                                 </Row>
