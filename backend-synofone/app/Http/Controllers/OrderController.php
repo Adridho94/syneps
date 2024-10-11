@@ -25,6 +25,8 @@ class OrderController extends Controller
         ], 200);
     }
 
+
+    
     public function store(Request $request)
     {
         $rules = [

@@ -118,7 +118,7 @@ class ProductController extends Controller
     public function update(Request $request, string $id)
     {
         $dataValidate = Validator::make($request->all(), [
-            'image' => 'mimes:jpg,jpeg,png,svg|max:2048',
+            // 'image' => 'nullable||mimes:jpg,jpeg,png,svg|max:2048',
             'title' => 'required',
             'spesification' => 'required',
             'price' => 'required',
