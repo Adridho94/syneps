@@ -1,8 +1,29 @@
 import { Button, Container, Row, Col, Form } from "react-bootstrap";
 import FooterComponent from "../../components/customer/FooterComponent";
 import NavComponent from "../../components/customer/NavComponent";
-
+import { useParams,useNavigate } from "react-router-dom";
+import {useState, useEffect} from 'react';
+import Api from '../../routes/Api';
 const StatusPage = () => {
+    const params = useParams();
+    const navigateTo = useNavigate();
+    const [order, setOrder] = useState({});
+    const [totalBelanja, setTotalBelanja] = useState(0);
+
+    const getOrder = async () => {
+        try {
+            const response = await Api.get('/order/' + params.id);
+            setOrder(response.data.data);
+            console.log(response);
+            console.log('Order:', response.data.data);
+        } catch (error) {
+            console.log('Error fetching order:', error);
+        }
+    };
+
+    useEffect(() => {
+        getOrder();
+    }, []);
     return (
         <>
             <NavComponent />

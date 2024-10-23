@@ -21,9 +21,32 @@ class CartitemController extends Controller
             $cart_id = $cart[0]->id;
             $produkItem = Cartitem::where('cart_id', $cart_id)->with('product')->get();
         } else {
-            $produkItem = [];
+            $produkItem =[];
+            
         }
 
+
+        return response()->json([
+            'message' => 'Berhasil menampilkan data cartitem',
+            'data' => $produkItem
+        ], 200);
+    }
+
+    public function cartItemOrder($id)
+    {
+        $user_id = auth()->user()->id;
+        $cart = Cart::where('user_id', $user_id)
+            ->where('status', 1)
+            ->get(); // Mengambil seluruh data dalam bentuk collection
+
+        if ($cart->isNotEmpty()) {
+            $cart_id = $id; // Mengambil id dari item terakhir
+            $produkItem = Cartitem::where('cart_id', $cart_id)
+                ->with('product')
+                ->get();
+        } else {
+            $produkItem = [];
+        }
 
         return response()->json([
             'message' => 'Berhasil menampilkan data cartitem',

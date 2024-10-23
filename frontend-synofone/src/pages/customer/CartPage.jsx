@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Card, Form, Button, Modal } from 'react-bootstrap';
+import { Container, Row, Col, Card, Form, Button, Modal, Tab, Tabs } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import NavComponent from '../../components/customer/NavbarComponent';
 import Api from '../../routes/Api';
@@ -10,6 +10,11 @@ const CartPage = () => {
     const [cartItems, setCartItems] = useState([]);
     const [orderItems, setOrderItems] = useState([]);
     const navigate = useNavigate();
+
+    const filteredItems = orderItems.filter(item => item.status === 3);
+    const filteredOrder = orderItems.filter(item => item.status !== 3);
+    // const filteredOrder2 = orderItems.filter(item => item.status === 1);
+
     const formatRupiah = (angka) => {
         const number_string = angka.toString().replace(/[^,\d]/g, '');
         const split = number_string.split(',');
@@ -27,11 +32,11 @@ const CartPage = () => {
     };
 
 
-    const checkCart = async () => {
+    const checkChart = async () => {
         try {
             const response = await Api.get('/checkCart');
             setOrderItems(response.data.data);
-            console.log(response.data.data);
+            console.log(response);
         } catch (error) {
             console.error(error);
         }
@@ -128,7 +133,7 @@ const CartPage = () => {
 
     useEffect(() => {
         getCartItems();
-        checkCart();
+        checkChart();
     }, []);
 
     return (
@@ -136,79 +141,126 @@ const CartPage = () => {
             <NavComponent />
             <div id="cart">
                 <Container className="mt-5">
-                    {cartItems.length === 0 ? (
-                        <Row>
-                            <Col lg={6} md={6}>
-                                <h1 className='fs-2'>Keranjang masih kosong :(</h1>
-                            </Col>
-                            <Col lg={6} md={6}>
-                                <div>Daftar Transaksi :</div>
-                                {orderItems.map(item => (
-                                    <div key={item.id}>
-                                        <div className='btn btn-success'>{item.status}</div>
-                                    </div>
-                                ))}
-                            </Col>
-                        </Row>
-                    ) : (
+                    {cartItems.length === 0 ?
+                        (
+                            <Row>
+                                <Col lg={6} md={6}>
+                                    <h1 className='fs-2'>Keranjang masih kosong :(</h1>
+                                </Col>
+                                <Col lg={6} md={6}>
+                                    <Row className='text-center'>
+                                        <div className='fs-3 fw-bold text-decoration-underline'>Daftar Transaksi</div>
+                                    </Row>
+                                    <Row>
+                                        <Tabs
+                                            defaultActiveKey="profile"
+                                            id="uncontrolled-tab-example"
+                                            className="mb-3"
+                                        >
+                                            <Tab eventKey="semua" title="Semua">
+                                                {orderItems.map((item, index) => (
+                                                    <div key={item.id}>
+                                                        <p className='fw-bold fs-5'>{index + 1}:
+                                                            {item.status == 1 ? <Link to={`/order/${item.id}`} className='btn btn-warning m-2'>Selesaikan Order </Link> :
+                                                                item.status == 2 ? <Link to={`/status/${item.id}`} className='btn btn-danger m-2'>Konfirmasi Pembayaran</Link> :
+                                                                    <Link to={`/status/${item.id}`} className='btn btn-success m-2'>Selesai</Link>}
+                                                        </p>
+                                                    </div>
+                                                ))}
+                                            </Tab>
+                                            <Tab eventKey="order" title="Order">
+                                                {filteredOrder.length > 0 ? (
+                                                    filteredOrder.map(item => (
+                                                        <div key={item.id}>
+                                                            <p className='fw-bold fs-5'>Status:
+                                                                {
+                                                                    item.status == 1 ? <Link to={`/order/${item.id}`} className='btn btn-warning m-2'>Selesaikan Order </Link> :
+                                                                        <Link to={`/status/${item.id}`} className='btn btn-danger m-2'>Konfirmasi Pembayaran</Link>
+                                                                }  
+                                                                
 
-                        <Row>
-                            <Col lg={7}>
-                                {cartItems.map(item => (
-                                    <Card key={item.id} className="mb-3">
-                                        <Row>
-                                            <Col md={4}>
-                                                <img
-                                                    src={item.product.image}
-                                                    width="100%"
-                                                    alt={item.product.title}
-                                                />
-                                            </Col>
-                                            <Col md={8}>
-                                                <Card.Body>
-                                                    <Row>
-                                                        <Col lg={6}>
-                                                            <Link to={`/detail/${item.id}`} className="card-title">{item.product.title}</Link>
-                                                            <Form>
-                                                                <Form.Label>Jumlah :</Form.Label>
-                                                                <Form.Control
-                                                                    type="number"
-                                                                    name="jumlah"
-                                                                    min={1}
-                                                                    value={item.qty || 1}
-                                                                    onChange={(e) => handleJumlahChange(e, item.id)}
-                                                                />
-                                                            </Form>
-                                                            <p className="mt-2">Harga :</p>
-                                                            <h5>IDR {formatRupiah(item.product.price * item.qty)}</h5>
-                                                        </Col>
-                                                        <Col className="text-end">
-                                                            <Button
-                                                                variant="danger"
-                                                                onClick={() => { setShowModal(true); setSelectedItem(item.id); }}
-                                                            >
-                                                                Hapus
-                                                            </Button>
-                                                        </Col>
-                                                    </Row>
-                                                </Card.Body>
-                                            </Col>
-                                        </Row>
-                                    </Card>
-                                ))}
-                            </Col>
-                            <Col lg={5}>
-                                <div className="ringkasan">
-                                    <Card>
-                                        <h5>Ringkasan Belanja</h5>
-                                        <p><b>Total Item</b> : {calculateTotalItems()}</p>
-                                        <p><b>Total Belanja</b> : IDR {calculateTotalBelanja()}</p>
-                                        <Button onClick={handleCheckout} className="btn btn-primary w-100">Check Out</Button>
-                                    </Card>
-                                </div>
-                            </Col>
-                        </Row>
-                    )}
+                                                            </p>
+                                                        </div>
+                                                    ))
+                                                ) : (
+                                                    <p>Data tidak ada</p>
+                                                )}
+                                            </Tab>
+                                            <Tab eventKey="selesai" title="Selesai" >
+                                                {filteredItems.length > 0 ? (
+                                                    filteredItems.map(item => (
+                                                        <div key={item.id}>
+                                                            <p className='fw-bold fs-5'>Status:
+                                                                <Link to={`/status/${item.id}`} className='btn btn-success m-2'>Selesai</Link>
+                                                            </p>
+                                                        </div>
+                                                    ))
+                                                ) : (
+                                                    <p>Data tidak ada</p>
+                                                )}
+                                            </Tab>
+                                        </Tabs>
+                                    </Row>
+                                </Col>
+                            </Row>
+                        ) : (
+                            <Row>
+                                <Col lg={7}>
+                                    {cartItems.map(item => (
+                                        <Card key={item.id} className="mb-3">
+                                            <Row>
+                                                <Col md={4}>
+                                                    <img
+                                                        src={item.product.image}
+                                                        width="100%"
+                                                        alt={item.product.title}
+                                                    />
+                                                </Col>
+                                                <Col md={8}>
+                                                    <Card.Body>
+                                                        <Row>
+                                                            <Col lg={6}>
+                                                                <Link to={`/detail/${item.id}`} className="card-title">{item.product.title}</Link>
+                                                                <Form>
+                                                                    <Form.Label>Jumlah :</Form.Label>
+                                                                    <Form.Control
+                                                                        type="number"
+                                                                        name="jumlah"
+                                                                        min={1}
+                                                                        value={item.qty || 1}
+                                                                        onChange={(e) => handleJumlahChange(e, item.id)}
+                                                                    />
+                                                                </Form>
+                                                                <p className="mt-2">Harga :</p>
+                                                                <h5>IDR {formatRupiah(item.product.price * item.qty)}</h5>
+                                                            </Col>
+                                                            <Col className="text-end">
+                                                                <Button
+                                                                    variant="danger"
+                                                                    onClick={() => { setShowModal(true); setSelectedItem(item.id); }}
+                                                                >
+                                                                    Hapus
+                                                                </Button>
+                                                            </Col>
+                                                        </Row>
+                                                    </Card.Body>
+                                                </Col>
+                                            </Row>
+                                        </Card>
+                                    ))}
+                                </Col>
+                                <Col lg={5}>
+                                    <div className="ringkasan">
+                                        <Card>
+                                            <h5>Ringkasan Belanja</h5>
+                                            <p><b>Total Item</b> : {calculateTotalItems()}</p>
+                                            <p><b>Total Belanja</b> : IDR {calculateTotalBelanja()}</p>
+                                            <Button onClick={handleCheckout} className="btn btn-primary w-100">Check Out</Button>
+                                        </Card>
+                                    </div>
+                                </Col>
+                            </Row>
+                        )}
 
                     {/* Modal Hapus Item */}
                     <Modal show={showModal} onHide={() => setShowModal(false)} centered>

@@ -1,41 +1,71 @@
-import React, { useState } from 'react';
-import { Container, Row, Col, Card, Form, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Container, Row, Col, Card, Form } from 'react-bootstrap';
+import { Link, useParams,useNavigate } from 'react-router-dom';
 import NavComponent from '../../components/customer/NavComponent';
 import FooterComponent from '../../components/customer/FooterComponent';
-
+import Api from '../../routes/Api';
+import Swal from 'sweetalert2';
 const OrderPage = () => {
     const [jumlah, setJumlah] = useState(1);
-    const [metodePembayaran, setMetodePembayaran] = useState('');
-    const [metodePengiriman, setMetodePengiriman] = useState('');
-
-    const hargaProduk = 500000; // Harga produk per unit
-
-    // Event handler untuk mengubah nilai jumlah
-    const handleJumlahChange = (event) => {
-        const newJumlah = parseInt(event.target.value);
-        setJumlah(newJumlah);
+    const [orderItems, setOrderItems] = useState([]);
+    const [order, setOrder] = useState({
+        cart_id: "",
+        alamat: '',
+        metode_pembayaran: '',
+        metode_pengiriman: '',
+        totalBelanja: 0,
+    });
+    const navigateTo = useNavigate();
+    const hargaProduk = orderItems.reduce((total, item) => total + item.product.price * item.qty, 0);
+    const params = useParams();
+    const order_id = params.id;
+    const getOrderItems = async () => {
+        try {
+            const response = await Api.get('/cartitem-order/' + order_id);
+            setOrderItems(response.data.data);
+            setOrder({ ...order, cart_id: response.data.data[0].cart_id });
+            console.log('Order items:', response.data.data);
+        } catch (error) {
+            console.log('Error fetching order items:', error);
+        }
     };
 
-    // Event handler untuk mengubah metode pembayaran
-    const handleMetodePembayaranChange = (event) => {
-        const selectedMetode = event.target.value;
-        setMetodePembayaran(selectedMetode);
-    };
 
-    // Event handler untuk mengubah metode pengiriman
-    const handleMetodePengirimanChange = (event) => {
-        const selectedMetode = event.target.value;
-        setMetodePengiriman(selectedMetode);
-    };
 
     // Menghitung total belanja berdasarkan jumlah dan metode pengiriman
     const calculateTotalBelanja = () => {
-        const hargaPengiriman = metodePengiriman === 'reguler' ? 20000 : metodePengiriman === 'ekspres' ? 50000 : 0;
+        const hargaPengiriman = order.metode_pengiriman === 'reguler' ? 20000 : order.metode_pengiriman === 'ekspres' ? 50000 : 0;
         const totalHarga = hargaProduk * jumlah + hargaPengiriman;
         return totalHarga;
     };
 
+
+    const handleOrder = async () => {
+        try {
+            const response = await Api.post('/order', {
+                ...order,
+                totalBelanja: calculateTotalBelanja(),
+            });
+            console.log('Order:', response.data);
+            Swal.fire({
+                icon: 'success',
+                title: 'Order Berhasil',
+                text: 'Pesanan anda berhasil diterima',
+            });
+            navigateTo('/status/'+response.data.data.id);
+        } catch (error) {
+            console.log('Error ordering:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Order Gagal',
+                text: 'Pesanan anda gagal diterima',
+            });
+        }
+    };
+
+    useEffect(() => {
+        getOrderItems();
+    }, []);
     return (
         <>
             <NavComponent />
@@ -45,26 +75,27 @@ const OrderPage = () => {
                         <div className="produk mt-5">
                             <Card className="mb-3">
                                 <Card.Body>
-                                    <Row>
-                                        <Col lg={4}>
-                                            <Card.Img src="/src/assets/hp3.png" width="100%" alt="" />
-                                        </Col>
-                                        <Col lg={8}>
-                                            <h5>Iphone 15 Pro Max</h5>
-                                            <Form>
-                                                <Form.Label>Jumlah :</Form.Label>
-                                                <Form.Control
-                                                    type="number"
-                                                    name="jumlah"
-                                                    value={jumlah}
-                                                    onChange={handleJumlahChange}
-                                                    min={1}
-                                                />
-                                            </Form>
-                                            <label htmlFor="harga">Harga</label>
-                                            <h5>IDR {(hargaProduk * jumlah).toLocaleString()}</h5>
-                                        </Col>
-                                    </Row>
+                                    {orderItems.map((item, index) => (
+                                        <Row key={item.id || index}>
+                                            <Col lg={4}>
+                                                <Card.Img src={item.product.image} width="100%" alt="" />
+                                            </Col>
+                                            <Col lg={8}>
+                                                <h5>{item.product.title}</h5>
+                                                <Form>
+                                                    <Form.Label>Jumlah :</Form.Label>
+                                                    <Form.Control
+                                                        type="number"
+                                                        name="jumlah"
+                                                        value={item.qty}
+                                                        disabled
+                                                    />
+                                                </Form>
+                                                <label htmlFor="harga">Harga</label>
+                                                <h5>IDR {(item.product.price * item.qty).toLocaleString()}</h5>
+                                            </Col>
+                                        </Row>
+                                    ))}
                                 </Card.Body>
                             </Card>
                         </div>
@@ -72,12 +103,23 @@ const OrderPage = () => {
                         <div className="info-buyer">
                             <Form>
                                 <Form.Label>Alamat</Form.Label>
-                                <Form.Control as="textarea" name="alamat" placeholder="Masukkan Alamat" rows={5} />
+                                <Form.Control
+                                    as="textarea"
+                                    name="alamat"
+                                    placeholder="Masukkan Alamat"
+                                    rows={5}
+                                    value={order.alamat}
+                                    onChange={(e) => setOrder({ ...order, alamat: e.target.value })}
+                                />
                             </Form>
 
                             <Form.Group className="mb-3 mt-3">
                                 <Form.Label>Metode Pengiriman</Form.Label>
-                                <Form.Select name="pengiriman" onChange={handleMetodePengirimanChange}>
+                                <Form.Select
+                                    name="pengiriman"
+                                    onChange={(e) => setOrder({ ...order, metode_pengiriman: e.target.value })}
+
+                                >
                                     <option value="">-- Pilih Satu --</option>
                                     <option value="reguler">Reguler | IDR 20.000</option>
                                     <option value="ekspres">Ekspres | IDR 50.000</option>
@@ -86,7 +128,10 @@ const OrderPage = () => {
 
                             <Form.Group className="mb-3 mt-3">
                                 <Form.Label>Metode Pembayaran</Form.Label>
-                                <Form.Select name="bayar" onChange={handleMetodePembayaranChange}>
+                                <Form.Select
+                                    name="bayar"
+                                    onChange={(e) => setOrder({ ...order, metode_pembayaran: e.target.value })}
+                                >
                                     <option value="">-- Pilih Satu --</option>
                                     <option value="bank">Transfer Bank</option>
                                     <option value="gopay">Gopay</option>
@@ -94,7 +139,7 @@ const OrderPage = () => {
                             </Form.Group>
 
                             {/* Tampilan Bank */}
-                            {metodePembayaran === 'bank' && (
+                            {order.metode_pembayaran === 'bank' && (
                                 <Row id="row-bank">
                                     <Col md={3}>
                                         <img src="/src/assets/ic-bca.png" alt="" width="120px" />
@@ -108,7 +153,7 @@ const OrderPage = () => {
                             )}
 
                             {/* Tampilan Gopay */}
-                            {metodePembayaran === 'gopay' && (
+                            {order.metode_pembayaran === 'gopay' && (
                                 <Row id="row-gopay">
                                     <Col md={3}>
                                         <img src="/src/assets/ic-gopay.png" alt="" width="120px" />
@@ -127,14 +172,17 @@ const OrderPage = () => {
                         <div className="rincian mt-5">
                             <h6>Rincian Pembayaran</h6>
                             <p>Harga Produk: <b>IDR {(hargaProduk * jumlah).toLocaleString()}</b></p>
-                            <p>Ongkos Kirim ({metodePengiriman}): <b>IDR {metodePengiriman === 'reguler' ? '20,000' : metodePengiriman === 'ekspres' ? '50,000' : '0'}</b></p>
+                            <p>Ongkos Kirim ({order.metode_pengiriman}): <b>IDR {order.metode_pengiriman === 'reguler' ? '20,000' : order.metode_pengiriman === 'ekspres' ? '50,000' : '0'}</b></p>
                             <hr />
                             <p>Total Belanja: <b>IDR {calculateTotalBelanja().toLocaleString()}</b></p>
                         </div>
 
-                        <Link to="/status" className="btn btn-primary w-100 mt-3">
+                        <div 
+                        onClick={handleOrder}
+                        className="btn btn-primary w-100 mt-3"
+                        >
                             Konfirmasi
-                        </Link>
+                        </div>
                     </Col>
                 </Row>
             </Container>

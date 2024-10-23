@@ -19,4 +19,5 @@ class Cartitem extends Model
     {
         return $this->belongsTo(Cart::class, 'cart_id', 'id');
     }
+   
 }

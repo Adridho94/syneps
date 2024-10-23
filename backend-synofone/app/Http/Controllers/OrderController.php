@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Order;
+use App\Models\Cart;
+use App\Models\Cartitem;
 use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
@@ -16,6 +18,17 @@ class OrderController extends Controller
         'metode_pembayaran' => 'required',
     ];
 
+    public function orderUser()
+    {
+        return "oke";
+        $user_id = auth()->user()->id;
+        $order = Order::where('user_id', $user_id)->get();
+        return response()->json([
+            'message' => $order->count() > 0 ? 'Data Order Sebagai Berikut' : 'Data Order Belum ada',
+            'data' => $order->count() > 0 ? $order : []
+        ], 200);
+    }
+
     public function index()
     {
         $orders = Order::all();
@@ -26,7 +39,7 @@ class OrderController extends Controller
     }
 
 
-    
+
     public function store(Request $request)
     {
         $rules = [
@@ -51,20 +64,25 @@ class OrderController extends Controller
     public function show($id)
     {
         $order = Order::with('cart.user')->find($id);
+        $totalHargaProduct = 0;
+        $totalHarga = 0;
+    $cart = Cart::find($order->cart_id);
+    $cartItem = Cartitem::where('cart_id', $cart->id)->get();
+    foreach ($cartItem as $item) {
+        $totalHargaProduct += $item->product->price * $item->qty;
+    }
+    
+
         if (is_null($order)) {
             return response()->json([
                 'message' => 'Data Order Tidak Ditemukan'
             ], 404);
         }
-        // Mengambil data user dari relasi cart
-        // $user = $order->cart->user;
-        // Menghapus properti cart dari order
-        // unset($order->cart);
-        // Menambahkan properti user ke dalam order
-        // $order->user = $user;
+
         return response()->json([
             'message' => 'Data Order Berhasil Ditemukan',
-            'data' => $order
+            'data' => $order,
+            'totalHargaProduct' => $totalHargaProduct,
         ], 200);
     }
 

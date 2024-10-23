@@ -12,7 +12,7 @@ class CartController extends Controller
 {
     public function checkCart(){
         $user_id = Auth::user()->id;
-        $cart = Cart::where('user_id', $user_id)->where('status', 1)->get();
+        $cart = Cart::where('user_id', $user_id)->where('status', '!=', 0)->get();
         if ($cart->count() > 0) {
             return response()->json([
                 'message' => 'Cart sudah ada',
@@ -50,6 +50,9 @@ class CartController extends Controller
             }
             else{
                 $jumlah = $request->qty;
+                // $cart = Cart::create([
+                //     'user_id' => $user_id,
+                // ]);
                 $cart_item = Cartitem::create([
                     'cart_id' => $cart->id,
                     'product_id' => $produk_id,
@@ -61,7 +64,7 @@ class CartController extends Controller
                 ], 200);
             }
         } else {
-            return "tidak";
+            // return "tidak";
             $cart = Cart::create([
                 'user_id' => $user_id,
             ]);
