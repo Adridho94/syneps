@@ -60,7 +60,8 @@ Route::middleware(('auth:sanctum'))->group(function () {
     Route::get('/order/{id}', [OrderController::class, 'show']);
     Route::delete('/order/{id}', [OrderController::class, 'destroy']);
     Route::get('/order-user', [OrderController::class, 'orderUser']);
-
+    Route::get('/order-status/{id}', [OrderController::class, 'orderStatus']);
+    Route::post('upload-pembayaran/{id}', [OrderController::class, 'uploadPembayaran']);
     Route::get('/checkCart', [CartController::class, 'checkCart']);
 });
 // Route::middleware('auth:sanctum')->get('/checkauth', [UserController::class, 'checkAuth']);

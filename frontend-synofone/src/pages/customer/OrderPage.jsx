@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Form } from 'react-bootstrap';
-import { Link, useParams,useNavigate } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import NavComponent from '../../components/customer/NavComponent';
 import FooterComponent from '../../components/customer/FooterComponent';
 import Api from '../../routes/Api';
@@ -13,7 +13,7 @@ const OrderPage = () => {
         alamat: '',
         metode_pembayaran: '',
         metode_pengiriman: '',
-        totalBelanja: 0,
+        total_pembayaran: 0,
     });
     const navigateTo = useNavigate();
     const hargaProduk = orderItems.reduce((total, item) => total + item.product.price * item.qty, 0);
@@ -44,7 +44,7 @@ const OrderPage = () => {
         try {
             const response = await Api.post('/order', {
                 ...order,
-                totalBelanja: calculateTotalBelanja(),
+                total_pembayaran: calculateTotalBelanja(),
             });
             console.log('Order:', response.data);
             Swal.fire({
@@ -52,7 +52,7 @@ const OrderPage = () => {
                 title: 'Order Berhasil',
                 text: 'Pesanan anda berhasil diterima',
             });
-            navigateTo('/status/'+response.data.data.id);
+            navigateTo('/status/' + response.data.data.id);
         } catch (error) {
             console.log('Error ordering:', error);
             Swal.fire({
@@ -62,6 +62,7 @@ const OrderPage = () => {
             });
         }
     };
+
 
     useEffect(() => {
         getOrderItems();
@@ -177,9 +178,9 @@ const OrderPage = () => {
                             <p>Total Belanja: <b>IDR {calculateTotalBelanja().toLocaleString()}</b></p>
                         </div>
 
-                        <div 
-                        onClick={handleOrder}
-                        className="btn btn-primary w-100 mt-3"
+                        <div
+                            onClick={handleOrder}
+                            className="btn btn-primary w-100 mt-3"
                         >
                             Konfirmasi
                         </div>

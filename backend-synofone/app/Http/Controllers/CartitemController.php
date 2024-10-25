@@ -129,6 +129,7 @@ class CartitemController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Cart items and product stock updated successfully',
+            'data' => $updateOrder->id
         ]);
     }
 

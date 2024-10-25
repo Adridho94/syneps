@@ -116,7 +116,7 @@ const CartPage = () => {
                 timer: 1500
             });
 
-            navigate('/order');
+            navigate('/order/' + response.data.data);
 
         } catch (error) {
             console.error(error);
@@ -153,21 +153,11 @@ const CartPage = () => {
                                     </Row>
                                     <Row>
                                         <Tabs
-                                            defaultActiveKey="profile"
+                                            defaultActiveKey="order"
                                             id="uncontrolled-tab-example"
                                             className="mb-3"
                                         >
-                                            <Tab eventKey="semua" title="Semua">
-                                                {orderItems.map((item, index) => (
-                                                    <div key={item.id}>
-                                                        <p className='fw-bold fs-5'>{index + 1}:
-                                                            {item.status == 1 ? <Link to={`/order/${item.id}`} className='btn btn-warning m-2'>Selesaikan Order </Link> :
-                                                                item.status == 2 ? <Link to={`/status/${item.id}`} className='btn btn-danger m-2'>Konfirmasi Pembayaran</Link> :
-                                                                    <Link to={`/status/${item.id}`} className='btn btn-success m-2'>Selesai</Link>}
-                                                        </p>
-                                                    </div>
-                                                ))}
-                                            </Tab>
+
                                             <Tab eventKey="order" title="Order">
                                                 {filteredOrder.length > 0 ? (
                                                     filteredOrder.map(item => (
@@ -176,8 +166,8 @@ const CartPage = () => {
                                                                 {
                                                                     item.status == 1 ? <Link to={`/order/${item.id}`} className='btn btn-warning m-2'>Selesaikan Order </Link> :
                                                                         <Link to={`/status/${item.id}`} className='btn btn-danger m-2'>Konfirmasi Pembayaran</Link>
-                                                                }  
-                                                                
+                                                                }
+
 
                                                             </p>
                                                         </div>
